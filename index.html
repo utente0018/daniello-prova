@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Showroom D'Aniello</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: showroom alla Tesla, diviso in pagine come il sito vero. Ogni servizio apre con una foto a tutto schermo
+   e un foglio bianco che le scorre sopra; in home un'auto 3D entra in officina mentre scorri.
+   Bianco, grigi e nero; il blu della targa solo per l'azione. */
+:root {
+  --blue: #2350d8;
+  --blue-hover: #1c41b3;
+  --blue-soft: #e8eefc;
+  --white: #ffffff;
+  --card: #f4f4f4;
+  --off: #eeeeee;
+  --stage: #eceef1;
+  --line: #e2e2e2;
+  --border: #cccccc;
+  --subtle: #8e8e8e;
+  --steel: #5c5e62;
+  --charcoal: #393c41;
+  --onyx: #171a20;
+  --black: #000000;
+  --red: #e0352b;
+  --amber: #f29a00;
+  --green: #2fbf71;
+  --font: "Manrope", "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { background: var(--white); }
+body { margin: 0; background: var(--white); color: var(--onyx); font-family: var(--font); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+h1, h2, h3, h4, h5, p, ol, ul { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+button { font-family: var(--font); }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 900px) { .gutter { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); } }
+.wrap { width: 100%; max-width: 1200px; margin: 0 auto; }
+.tbc { text-decoration: underline dotted var(--subtle); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.tbc::after { content: "*"; color: var(--steel); }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
+
+/* ---------- passaggi tra le pagine ---------- */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.45s; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); }
+::view-transition-group(*) { animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); }
+.top { view-transition-name: topbar; }
+@media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
+
+/* ---------- accensione ---------- */
+.ignition { position: fixed; inset: 0; z-index: 90; background: var(--black); color: var(--white); display: grid; place-items: center; overflow: clip; }
+.ign-core { position: relative; display: grid; justify-items: center; gap: 28px; }
+.gauge { width: min(300px, 70vw); height: auto; overflow: visible; }
+.gauge .tick { stroke: rgba(255, 255, 255, 0.85); stroke-width: 2; stroke-linecap: round; }
+.gauge .tick.min { stroke-width: 1.2; stroke: rgba(255, 255, 255, 0.45); }
+.gauge .num { fill: rgba(255, 255, 255, 0.9); font: 600 14px var(--font); text-anchor: middle; dominant-baseline: middle; }
+.gauge .red { stroke: var(--red); stroke-width: 4; fill: none; }
+.gauge .needle { stroke: var(--white); stroke-width: 3; stroke-linecap: round; }
+.gauge .hub { fill: var(--white); }
+.gauge .unit { fill: rgba(255, 255, 255, 0.5); font: 500 10px var(--font); text-anchor: middle; letter-spacing: 0.12em; }
+.ign-word { display: flex; gap: 0.32em; font-weight: 600; font-size: 18px; letter-spacing: 0.1em; }
+.lamp { position: absolute; top: 50%; width: min(46vw, 520px); height: min(18vw, 200px); margin-top: calc(min(18vw, 200px) / -2); border-radius: 50%; background: radial-gradient(ellipse at center, rgba(235, 242, 255, 0.95), rgba(150, 185, 255, 0.35) 35%, rgba(0, 0, 0, 0) 68%); opacity: 0; pointer-events: none; }
+.lamp.l { left: -12vw; }
+.lamp.r { right: -12vw; }
+.skip { position: absolute; right: max(20px, env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: rgba(255, 255, 255, 0.12); color: var(--white); border: 0; border-radius: 4px; padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; }
+.skip:hover { background: rgba(255, 255, 255, 0.22); }
+
+/* ---------- testata ---------- */
+.top { position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding-top: env(safe-area-inset-top, 0px); color: var(--onyx); background: rgba(255, 255, 255, 0); transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; }
+.top[data-tone="dark"] { color: var(--white); }
+.top[data-tone="solid"] { background: var(--white); box-shadow: 0 1px 0 var(--line); }
+.top-inner { height: 56px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.word { justify-self: start; font-weight: 600; font-size: 15px; letter-spacing: 0.32em; text-decoration: none; white-space: nowrap; background: none; border: 0; color: inherit; cursor: pointer; padding: 0; }
+.links { display: flex; gap: 2px; }
+.links button, .top-right a, .menu-btn { font-size: 14px; font-weight: 500; text-decoration: none; padding: 6px 12px; border-radius: 4px; transition: background-color 0.25s ease; white-space: nowrap; background: none; border: 0; color: inherit; cursor: pointer; }
+.links button:hover, .top-right a:hover, .menu-btn:hover, .links button.on { background: rgba(23, 26, 32, 0.08); }
+.top[data-tone="dark"] .links button:hover, .top[data-tone="dark"] .top-right a:hover, .top[data-tone="dark"] .menu-btn:hover, .top[data-tone="dark"] .links button.on { background: rgba(255, 255, 255, 0.16); }
+.top-right { justify-self: end; display: flex; align-items: center; gap: 2px; }
+.tel-txt { font-variant-numeric: tabular-nums; }
+@media (max-width: 1240px) {
+  .links, .top-right .tel-link { display: none; }
+  .top-inner { grid-template-columns: 1fr auto; }
+  .menu-btn { background: rgba(23, 26, 32, 0.08); }
+  .top[data-tone="dark"] .menu-btn { background: rgba(255, 255, 255, 0.16); }
+}
+
+/* ---------- pulsanti ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 264px; min-height: 40px; padding: 8px 24px; border-radius: 4px; border: 0; font: 500 14px var(--font); text-decoration: none; cursor: pointer; transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease; }
+.btn.primary { background: var(--blue); color: var(--white); }
+.btn.primary:hover { background: var(--blue-hover); }
+.btn.light { background: rgba(244, 244, 244, 0.9); color: var(--charcoal); }
+.btn.light:hover { background: var(--white); }
+.btn.ghost { background: transparent; color: var(--onyx); box-shadow: inset 0 0 0 2px var(--onyx); }
+.btn.ghost:hover { background: var(--onyx); color: var(--white); }
+.btn.sm { min-width: 0; }
+.ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 24px; width: 100%; }
+@media (max-width: 700px) { .ctas { flex-direction: column; align-items: stretch; gap: 12px; } .btn { min-width: 0; width: 100%; } }
+.status::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.45; margin-right: 7px; vertical-align: 1px; }
+.status.open::before { background: var(--green); opacity: 1; }
+
+/* ---------- schermata con foto ---------- */
+.block { position: relative; }
+.panel { position: relative; height: 100vh; height: 100svh; overflow: clip; background: var(--black); color: var(--onyx); }
+.block > .panel { position: sticky; top: 0; z-index: 0; }
+.panel[data-tone="dark"] { color: var(--white); }
+.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.scrim { position: absolute; inset: 0; pointer-events: none; }
+.panel[data-tone="light"] .scrim { background: linear-gradient(to bottom, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0) 40%), linear-gradient(to top, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 26%); }
+.panel[data-tone="dark"] .scrim { background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 42%), linear-gradient(to top, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0) 32%); }
+.dim { position: absolute; inset: 0; background: var(--black); opacity: 0; pointer-events: none; }
+.content { position: relative; height: 100%; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; text-align: center; padding-top: calc(56px + env(safe-area-inset-top, 0px) + 7vh); padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+.head { display: grid; gap: 8px; justify-items: center; max-width: 680px; }
+.head h1, .head h2 { font-size: clamp(32px, 3.4vw, 48px); line-height: 1.17; font-weight: 500; letter-spacing: -0.01em; text-wrap: balance; }
+.head p { font-size: 17px; line-height: 1.45; max-width: 48ch; text-wrap: pretty; }
+.head .eyebrow { opacity: 0.8; }
+.foot { grid-row: 3; display: grid; gap: 14px; justify-items: center; width: 100%; }
+.note { font-size: 12px; line-height: 1.5; opacity: 0.92; }
+.chev { width: 22px; height: 22px; margin-top: 4px; animation: nudge 2.4s ease-in-out infinite; }
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+@media (prefers-reduced-motion: reduce) { .chev { animation: none; } }
+@media (max-width: 700px) { .content { padding-top: calc(56px + env(safe-area-inset-top, 0px) + 5vh); } .head p { font-size: 15px; } }
+
+/* ---------- scena 3D ---------- */
+.stage { position: relative; height: 100vh; height: 100svh; background: linear-gradient(to bottom, #f6f7f9 0%, #eef0f3 52%, #dfe2e7 100%); overflow: clip; color: var(--onyx); }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
+.stage-cap { position: absolute; left: 0; right: 0; top: calc(56px + env(safe-area-inset-top, 0px) + 5vh); display: grid; justify-items: center; text-align: center; pointer-events: none; z-index: 2; }
+.cap { grid-area: 1 / 1; display: grid; gap: 8px; justify-items: center; max-width: 640px; opacity: 0; }
+.cap.on { opacity: 1; }
+.cap h2 { font-size: clamp(30px, 3.2vw, 44px); font-weight: 500; line-height: 1.17; letter-spacing: -0.01em; }
+.cap p { font-size: 17px; color: var(--charcoal); }
+.stage-load { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; }
+.stage-load span { font-size: 13px; color: var(--steel); letter-spacing: 0.04em; }
+.stage-load i { display: block; width: 160px; height: 2px; margin: 12px auto 0; background: var(--line); overflow: clip; position: relative; }
+.stage-load i::after { content: ""; position: absolute; inset: 0; width: 40%; background: var(--onyx); animation: load 1.1s ease-in-out infinite; }
+@keyframes load { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+.stage-bar { position: absolute; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); width: min(220px, 50vw); height: 2px; margin-left: calc(min(220px, 50vw) / -2); background: rgba(23, 26, 32, 0.12); z-index: 2; }
+.stage-bar i { display: block; height: 100%; width: 100%; background: var(--onyx); transform-origin: left center; transform: scaleX(0); }
+.stage-hint { position: absolute; left: 0; right: 0; bottom: calc(36px + env(safe-area-inset-bottom, 0px)); text-align: center; font-size: 12px; color: var(--steel); z-index: 2; pointer-events: none; }
+.hots { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.hot { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 8px; padding: 0; background: none; border: 0; cursor: pointer; pointer-events: auto; opacity: 0; transform: translate(-9999px, -9999px); color: var(--onyx); }
+.hot.flip { flex-direction: row-reverse; }
+.hot .pulse { position: relative; width: 18px; height: 18px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 4px rgba(35, 80, 216, 0.25); flex: none; }
+.hot .pulse::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(35, 80, 216, 0.5); animation: ring 1.8s ease-out infinite; }
+@keyframes ring { from { transform: scale(0.5); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .hot .pulse::after { animation: none; } }
+.hot .lbl { background: var(--white); border-radius: 4px; padding: 6px 10px; font-size: 13px; font-weight: 600; white-space: nowrap; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
+.hot .lbl small { display: block; font-size: 11px; font-weight: 500; color: var(--steel); }
+@media (max-width: 700px) { .hot .lbl { font-size: 12px; padding: 4px 8px; } .hot .lbl small { display: none; } .hot .pulse { width: 14px; height: 14px; } }
+.hot:hover .lbl, .hot:focus-visible .lbl { background: var(--onyx); color: var(--white); }
+.hot:hover .lbl small, .hot:focus-visible .lbl small { color: rgba(255, 255, 255, 0.7); }
+.stage-fallback { position: absolute; inset: 0; display: grid; align-content: end; justify-items: center; gap: 16px; padding: 0 16px calc(48px + env(safe-area-inset-bottom, 0px)); z-index: 2; }
+.stage-fallback img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+.fall-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+
+/* ---------- fogli bianchi ---------- */
+.sheet { position: relative; z-index: 1; background: var(--white); padding-block: 96px 112px; }
+.band { padding-block: 96px; }
+.band.grey { background: var(--card); }
+.band.dark { background: var(--onyx); color: var(--white); }
+.d-head { text-align: center; max-width: 740px; margin: 0 auto; display: grid; gap: 16px; justify-items: center; }
+.d-head h3 { font-size: clamp(30px, 3vw, 40px); line-height: 1.2; font-weight: 500; letter-spacing: -0.01em; text-wrap: balance; }
+.d-head p { font-size: 17px; line-height: 1.6; color: var(--charcoal); text-wrap: pretty; }
+.band.dark .d-head p { color: rgba(255, 255, 255, 0.75); }
+.specs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 24px; margin-top: 56px; padding-block: 28px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
+.spec .v { display: block; font-size: clamp(24px, 2.4vw, 34px); line-height: 1.15; font-weight: 500; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.spec .l { display: block; margin-top: 6px; font-size: 14px; color: var(--steel); }
+@media (max-width: 860px) { .specs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.sub { margin-top: 80px; display: grid; gap: 28px; }
+.sub > h4 { font-size: 28px; line-height: 1.29; font-weight: 500; }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cards.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.cards.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1000px) { .cards, .cards.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .cards, .cards.four, .cards.two { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--card); border-radius: 8px; padding: 24px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.card h5 { font-size: 20px; line-height: 1.4; font-weight: 500; }
+.card p { font-size: 14px; line-height: 1.6; color: var(--charcoal); }
+.card .k { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel); }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; counter-reset: st; }
+.steps.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 1000px) { .steps, .steps.five { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .steps, .steps.five { grid-template-columns: minmax(0, 1fr); } }
+.steps li { display: grid; gap: 8px; align-content: start; border-top: 2px solid var(--onyx); padding-top: 16px; counter-increment: st; }
+.steps li::before { content: counter(st, decimal-leading-zero); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: var(--steel); }
+.steps b { font-size: 20px; line-height: 1.4; font-weight: 500; }
+.steps span { font-size: 14px; line-height: 1.6; color: var(--charcoal); }
+.rows { display: grid; border-top: 1px solid var(--line); }
+.rows li { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 16px; padding-block: 14px; border-bottom: 1px solid var(--line); font-size: 15px; line-height: 1.55; color: var(--charcoal); }
+.rows li b { color: var(--onyx); font-weight: 600; }
+@media (max-width: 480px) { .rows li { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+@media (max-width: 900px) { .split { grid-template-columns: minmax(0, 1fr); gap: 28px; } }
+.split-img { border-radius: 8px; overflow: clip; aspect-ratio: 4 / 3; max-width: 100%; background: var(--off); }
+.split-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.split-text { display: grid; gap: 20px; min-width: 0; }
+.split-text h4 { font-size: 28px; line-height: 1.29; font-weight: 500; }
+.split-text > p { font-size: 17px; line-height: 1.6; color: var(--charcoal); }
+.cta-row { margin-top: 64px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 24px; }
+@media (max-width: 700px) { .cta-row { flex-direction: column; } .cta-row .btn { width: 100%; } }
+.callout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 32px; align-items: center; background: var(--onyx); color: var(--white); border-radius: 8px; padding: 28px 32px; }
+.callout h4 { font-size: 24px; font-weight: 500; line-height: 1.3; }
+.callout p { font-size: 15px; color: rgba(255, 255, 255, 0.78); margin-top: 4px; }
+@media (max-width: 760px) { .callout { grid-template-columns: minmax(0, 1fr); } .callout .btn { width: 100%; } }
+
+/* "Tutti i dettagli" */
+.more { margin-top: 72px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.more > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 24px; font-size: 20px; font-weight: 500; }
+.more > summary::-webkit-details-marker { display: none; }
+.more > summary::after { content: "+"; font-size: 28px; font-weight: 400; line-height: 1; color: var(--steel); transition: transform 0.25s ease; }
+.more[open] > summary::after { transform: rotate(45deg); }
+.more-body { padding-bottom: 40px; display: grid; gap: 48px; }
+.more-body h4 { font-size: 22px; font-weight: 500; line-height: 1.3; margin-bottom: 18px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq details:first-child { border-top: 1px solid var(--line); }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 18px; font-size: 16px; font-weight: 500; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-size: 22px; font-weight: 400; color: var(--steel); transition: transform 0.25s ease; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding-bottom: 18px; font-size: 15px; line-height: 1.65; color: var(--charcoal); max-width: 72ch; }
+.checks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 32px; border-top: 1px solid var(--line); }
+@media (max-width: 900px) { .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .checks { grid-template-columns: minmax(0, 1fr); } }
+.checks li { padding-block: 14px; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--charcoal); line-height: 1.55; }
+.checks b { display: block; font-size: 15px; font-weight: 600; color: var(--onyx); }
+
+/* home: i servizi */
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 56px; }
+@media (max-width: 900px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .tiles { grid-template-columns: minmax(0, 1fr); } }
+.tile { position: relative; display: grid; align-content: end; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 8px; overflow: clip; text-decoration: none; color: var(--white); isolation: isolate; border: 0; padding: 0; cursor: pointer; text-align: left; background: var(--black); }
+.tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 0.6s ease; }
+.tile::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0) 60%); }
+.tile:hover img { transform: scale(1.04); }
+.tile .tt { padding: 20px; display: grid; gap: 4px; }
+.tile .tt b { font-size: 20px; font-weight: 500; color: var(--white); }
+.tile .tt span { font-size: 14px; color: rgba(255, 255, 255, 0.85); }
+
+/* quando scade la revisione */
+.due { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: stretch; margin-top: 48px; }
+@media (max-width: 900px) { .due { grid-template-columns: minmax(0, 1fr); } }
+.due-form { background: var(--white); border-radius: 8px; padding: 28px; display: grid; gap: 18px; align-content: start; }
+.band.grey .due-form { background: var(--white); }
+.sheet .due-form { background: var(--card); }
+.due-form label, .due-form .lab { display: grid; gap: 6px; font-size: 14px; color: var(--charcoal); }
+.due-form select { width: 100%; height: 44px; padding: 0 12px; border: 1px solid transparent; border-radius: 4px; background: var(--off); color: var(--onyx); font: 500 15px var(--font); }
+.sheet .due-form select { background: var(--white); }
+.due-form select:focus { outline: none; border-color: var(--onyx); }
+.two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--off); border-radius: 4px; padding: 4px; }
+.sheet .due-form .seg { background: var(--white); }
+.seg label { display: grid; place-items: center; min-height: 36px; border-radius: 4px; cursor: pointer; font-size: 14px; color: var(--charcoal); text-align: center; padding: 4px 6px; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label:has(input:checked) { background: var(--onyx); color: var(--white); font-weight: 500; }
+.seg label.off { opacity: 0.4; cursor: not-allowed; }
+.due-out { background: var(--onyx); color: var(--white); border-radius: 8px; padding: 28px; display: grid; gap: 10px; align-content: center; justify-items: start; }
+.due-out .k { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); }
+.due-out .date { font-size: clamp(30px, 3.4vw, 44px); font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; }
+.due-out .left { font-size: 17px; display: flex; align-items: center; gap: 10px; }
+.due-out .left::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--green); }
+.due-out[data-state="soon"] .left::before { background: var(--amber); }
+.due-out[data-state="late"] .left::before { background: var(--red); }
+.due-out .why { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+.due-out .ctas { justify-content: flex-start; margin-top: 8px; }
+.due-out .btn.light { background: rgba(255, 255, 255, 0.12); color: var(--white); }
+.due-out .btn.light:hover { background: rgba(255, 255, 255, 0.22); }
+
+/* cruscotto delle spie */
+.dash { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px; margin-top: 48px; }
+@media (max-width: 900px) { .dash { grid-template-columns: minmax(0, 1fr); } }
+.dash-panel { background: #0b0d10; border-radius: 8px; padding: 28px; display: grid; gap: 20px; align-content: start; }
+.dash-panel .k { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
+.lamps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 480px) { .lamps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.lampbtn { aspect-ratio: 1; display: grid; place-items: center; background: #15181d; border: 1px solid #23272e; border-radius: 8px; cursor: pointer; color: #3a3f47; transition: color 0.25s ease, background-color 0.25s ease, filter 0.25s ease, border-color 0.25s ease; }
+.lampbtn svg { width: 56%; height: 56%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.lampbtn svg text { fill: currentColor; stroke: none; font: 700 6px var(--font); text-anchor: middle; }
+.lampbtn:hover, .lampbtn.on { border-color: #343a43; }
+.lampbtn[data-c="red"]:hover, .lampbtn[data-c="red"].on { color: #ff4a3d; filter: drop-shadow(0 0 6px rgba(255, 74, 61, 0.7)); }
+.lampbtn[data-c="amber"]:hover, .lampbtn[data-c="amber"].on { color: #ffb020; filter: drop-shadow(0 0 6px rgba(255, 176, 32, 0.7)); }
+.lamp-info { background: var(--card); border-radius: 8px; padding: 28px; display: grid; gap: 14px; align-content: start; }
+.lamp-info .tag { justify-self: start; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; }
+.lamp-info .tag[data-c="red"] { background: #fde7e5; color: #a3241b; }
+.lamp-info .tag[data-c="amber"] { background: #fff1d6; color: #8a5200; }
+.lamp-info h5 { font-size: 24px; font-weight: 500; line-height: 1.3; }
+.lamp-info p { font-size: 15px; line-height: 1.6; color: var(--charcoal); }
+.lamp-info p b { color: var(--onyx); }
+.urg { display: flex; gap: 4px; }
+.urg i { width: 36px; height: 6px; border-radius: 3px; background: var(--line); }
+.urg[data-l="3"] i:nth-child(-n+3), .urg[data-l="2"] i:nth-child(-n+2), .urg[data-l="1"] i:nth-child(1) { background: var(--onyx); }
+
+/* gomme */
+.tyre-code { display: flex; flex-wrap: nowrap; white-space: nowrap; align-items: baseline; gap: 0 2px; font-size: clamp(32px, 4vw, 56px); line-height: 1.05; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.tyre-code button { all: unset; cursor: pointer; padding: 0 4px; border-radius: 4px; transition: background-color 0.2s ease, color 0.2s ease; }
+.tyre-code button:hover, .tyre-code button.on { background: var(--onyx); color: var(--white); }
+.tyre-code button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.tyre-code .sep { color: var(--subtle); font-weight: 400; }
+.tyre-legend { display: grid; border-top: 1px solid var(--line); }
+.tyre-legend li { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 12px; padding-block: 12px; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--charcoal); transition: background-color 0.2s ease; }
+.tyre-legend li b { color: var(--onyx); font-weight: 600; font-variant-numeric: tabular-nums; }
+.tyre-legend li.on { background: var(--card); }
+
+/* vendita */
+.stock { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 24px; align-items: stretch; margin-top: 48px; }
+@media (max-width: 900px) { .stock { grid-template-columns: minmax(0, 1fr); } }
+.empty { border: 1px dashed var(--border); border-radius: 8px; padding: 32px; display: grid; gap: 14px; align-content: center; justify-items: start; }
+.empty h5 { font-size: 24px; font-weight: 500; line-height: 1.3; }
+.empty p { font-size: 15px; color: var(--charcoal); line-height: 1.6; }
+.car { position: relative; background: var(--card); border-radius: 8px; overflow: clip; display: grid; grid-template-rows: auto 1fr; }
+.car img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+.car .badge { position: absolute; top: 14px; left: 14px; background: var(--onyx); color: var(--white); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; padding: 4px 10px; border-radius: 4px; }
+.car .body { padding: 20px 24px 24px; display: grid; gap: 12px; }
+.car h5 { font-size: 20px; font-weight: 500; }
+.car .meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; color: var(--steel); }
+.car .done-list { font-size: 14px; color: var(--charcoal); line-height: 1.6; }
+.car .done-list b { color: var(--onyx); font-weight: 600; }
+
+/* contatti */
+.hours { width: 100%; border-collapse: collapse; font-size: 16px; font-variant-numeric: tabular-nums; }
+.hours td { padding: 14px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.hours td:last-child { text-align: right; }
+.hours tr.today td { font-weight: 600; }
+.hours tr.today td:first-child::after { content: "  · oggi"; font-weight: 400; color: var(--steel); font-size: 13px; }
+
+/* piè di pagina */
+.site-foot { background: var(--white); border-top: 1px solid var(--line); padding-block: 40px 48px; position: relative; z-index: 1; }
+.foot-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; font-size: 13px; color: var(--steel); line-height: 1.7; }
+@media (max-width: 900px) { .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .foot-grid { grid-template-columns: minmax(0, 1fr); } }
+.foot-grid b { display: block; color: var(--onyx); font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+.foot-grid button { background: none; border: 0; padding: 0; color: inherit; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.foot-legal { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 12px; color: var(--steel); }
+.foot-legal a { color: inherit; }
+
+/* ---------- menu laterale e prenotazione ---------- */
+.drawer-wrap { position: fixed; inset: 0; z-index: 60; }
+.backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.4); }
+.drawer { position: absolute; top: 0; right: 0; bottom: 0; width: min(340px, 100%); background: var(--white); color: var(--onyx); padding-top: calc(env(safe-area-inset-top, 0px) + 16px); padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px); padding-left: 24px; padding-right: max(24px, env(safe-area-inset-right, 0px)); display: grid; grid-template-rows: auto 1fr auto; gap: 16px; overflow-y: auto; }
+.x { width: 36px; height: 36px; border: 0; border-radius: 4px; background: none; font-size: 20px; cursor: pointer; color: var(--onyx); }
+.x:hover { background: var(--off); }
+.drawer .x { justify-self: end; }
+.drawer nav { display: grid; align-content: start; }
+.drawer nav button { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 4px; font-size: 17px; font-weight: 500; text-align: left; background: none; border: 0; color: inherit; cursor: pointer; }
+.drawer nav button:hover { background: var(--off); }
+.drawer nav button span { color: var(--steel); }
+.drawer .info { font-size: 12px; line-height: 1.6; color: var(--steel); padding: 0 12px; }
+.modal-wrap { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: 16px; }
+.modal { position: relative; width: min(480px, 100%); max-height: calc(100svh - 32px); overflow-y: auto; background: var(--white); color: var(--onyx); border-radius: 8px; padding: 32px 24px 24px; display: grid; gap: 16px; }
+.modal > .x { position: absolute; top: 12px; right: 12px; }
+.modal h2 { font-size: 28px; line-height: 1.29; font-weight: 500; }
+.modal .sub-t { color: var(--charcoal); }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 420px) { .fields { grid-template-columns: minmax(0, 1fr); } }
+.fields label { display: grid; gap: 6px; font-size: 14px; color: var(--charcoal); }
+.fields input[type="text"], .fields input[type="tel"], .fields input[type="date"], .fields select { width: 100%; min-width: 0; height: 40px; padding: 0 12px; border: 1px solid transparent; border-radius: 4px; background: var(--off); color: var(--onyx); font: 400 14px var(--font); }
+.fields input:focus, .fields select:focus { outline: none; border-color: var(--onyx); }
+.modal .seg label:has(input:checked) { background: var(--white); color: var(--onyx); }
+.chk { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--charcoal); }
+.chk input { margin-top: 3px; accent-color: var(--blue); }
+.warn { font-size: 13px; color: #b3261e; }
+.fine { font-size: 11px; line-height: 1.2; color: var(--steel); }
+.done { display: grid; gap: 12px; }
+.done .msg { white-space: pre-wrap; background: var(--off); border-radius: 8px; padding: 14px 16px; font-size: 14px; color: var(--charcoal); }
+.modal .btn { width: 100%; min-width: 0; }
+</style>
+
+<!-- ================= ACCENSIONE ================= -->
+<div class="ignition" id="ignition" hidden>
+  <div class="lamp l" id="lamp-l"></div>
+  <div class="lamp r" id="lamp-r"></div>
+  <div class="ign-core">
+    <svg class="gauge" id="gauge" viewBox="0 0 240 240" aria-hidden="true"></svg>
+    <div class="ign-word" id="ign-word" aria-label="D'Aniello"></div>
+  </div>
+  <button type="button" class="skip" id="skip">Salta</button>
+</div>
+
+<!-- ================= TESTATA ================= -->
+<header class="top gutter" id="top" data-tone="light">
+  <div class="top-inner">
+    <button type="button" class="word" data-go="home">D'ANIELLO</button>
+    <nav class="links" aria-label="Servizi">
+      <button type="button" data-go="revisioni">Revisioni</button>
+      <button type="button" data-go="officina">Officina</button>
+      <button type="button" data-go="gommista">Gommista</button>
+      <button type="button" data-go="soccorso">Soccorso stradale</button>
+      <button type="button" data-go="preparazioni">Preparazioni</button>
+      <button type="button" data-go="vendita">Vendita auto</button>
+    </nav>
+    <div class="top-right">
+      <a class="tel-link" href="tel:+393505655754"><span class="tel-txt">350 565 5754</span></a>
+      <button type="button" class="menu-btn" id="open-menu" aria-expanded="false" aria-controls="drawer">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main id="views">
+  <!-- ================= HOME ================= -->
+  <section data-view="home" aria-label="Home">
+    <div class="panel" id="home-hero" data-tone="light">
+      <img class="bg" src="img/home.jpg" alt="Officina con un'auto sul ponte e un meccanico al lavoro" style="object-position: 62% 50%">
+      <div class="scrim"></div>
+      <div class="content gutter">
+        <div class="head">
+          <h1 id="hero-title" tabindex="-1">Autofficina D'Aniello</h1>
+          <p>Revisioni, officina, gommista, soccorso stradale, preparazioni e vendita auto. Allo scalo di Montecalvo Irpino, da circa 50 anni.</p>
+        </div>
+        <div class="foot">
+          <div class="ctas">
+            <button type="button" class="btn primary" data-book>Prenota la revisione</button>
+            <a class="btn light" href="tel:+393505655754">Chiama 350 565 5754</a>
+          </div>
+          <p class="note"><span class="status" data-status>Aperto ora</span></p>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <section class="stage" id="stage" data-tone="light" aria-label="L'auto entra in officina">
+      <canvas id="car-canvas" aria-hidden="true"></canvas>
+      <div class="stage-load" id="stage-load"><div><span>Accendo la scena 3D</span><i></i></div></div>
+      <div class="stage-cap">
+        <div class="cap on"><h2>Entra in officina.</h2><p>Revisione, meccanica, gomme. Tutto nello stesso posto.</p></div>
+        <div class="cap"><h2>Sale sul ponte.</h2><p>La guardiamo da ogni lato, prima di dirti cosa fare.</p></div>
+        <div class="cap"><h2>Tocca un punto dell'auto.</h2><p>Ogni parte ti porta al servizio giusto.</p></div>
+      </div>
+      <div class="hots" id="hots">
+        <button type="button" class="hot" data-hot="ruota" data-go="gommista"><span class="pulse"></span><span class="lbl">Gomme<small>Gommista</small></span></button>
+        <button type="button" class="hot" data-hot="faro" data-go="revisioni"><span class="pulse"></span><span class="lbl">Fari e freni<small>Revisioni</small></span></button>
+        <button type="button" class="hot" data-hot="freno" data-go="officina"><span class="pulse"></span><span class="lbl">Freni e meccanica<small>Officina</small></span></button>
+        <button type="button" class="hot" data-hot="motore" data-go="preparazioni"><span class="pulse"></span><span class="lbl">Motore<small>Preparazioni</small></span></button>
+        <button type="button" class="hot" data-hot="traino" data-go="soccorso"><span class="pulse"></span><span class="lbl">Traino<small>Soccorso stradale</small></span></button>
+        <button type="button" class="hot" data-hot="porta" data-go="vendita"><span class="pulse"></span><span class="lbl">Chiavi in mano<small>Vendita auto</small></span></button>
+      </div>
+      <div class="stage-fallback" id="stage-fallback" hidden>
+        <img src="img/officina.jpg" alt="">
+        <div class="fall-list">
+          <button type="button" class="btn light sm" data-go="revisioni">Revisioni</button>
+          <button type="button" class="btn light sm" data-go="officina">Officina</button>
+          <button type="button" class="btn light sm" data-go="gommista">Gommista</button>
+          <button type="button" class="btn light sm" data-go="soccorso">Soccorso</button>
+          <button type="button" class="btn light sm" data-go="preparazioni">Preparazioni</button>
+          <button type="button" class="btn light sm" data-go="vendita">Vendita auto</button>
+        </div>
+      </div>
+      <p class="stage-hint" id="stage-hint">Scorri</p>
+      <div class="stage-bar" aria-hidden="true"><i id="stage-bar"></i></div>
+    </section>
+
+    <section class="band gutter" data-sheet aria-label="I servizi">
+      <div class="wrap">
+        <div class="d-head reveal">
+          <p class="eyebrow" style="color:var(--steel)">Un posto solo per la tua auto</p>
+          <h3>Sei servizi, una sola officina.</h3>
+          <p>Dalla revisione alla prossima auto. Tocca un servizio per sapere tutto.</p>
+        </div>
+        <div class="tiles reveal">
+          <button type="button" class="tile" data-go="revisioni"><img src="img/revisioni.jpg" alt="" style="view-transition-name: vt-revisioni"><span class="tt"><b>Revisioni</b><span>Auto, moto, ciclomotori e autocarri fino a 3,5 t</span></span></button>
+          <button type="button" class="tile" data-go="officina"><img src="img/officina.jpg" alt="" style="view-transition-name: vt-officina"><span class="tt"><b>Officina</b><span>Tagliandi, freni, frizione, diagnosi</span></span></button>
+          <button type="button" class="tile" data-go="gommista"><img src="img/gommista.jpg" alt="" style="view-transition-name: vt-gommista"><span class="tt"><b>Gommista</b><span>Vendita, cambio, equilibratura, convergenza</span></span></button>
+          <button type="button" class="tile" data-go="soccorso"><img src="img/soccorso.jpg" alt="" style="view-transition-name: vt-soccorso"><span class="tt"><b>Soccorso stradale</b><span>Carro attrezzi negli orari dell'officina</span></span></button>
+          <button type="button" class="tile" data-go="preparazioni"><img src="img/preparazioni.jpg" alt="" style="view-transition-name: vt-preparazioni"><span class="tt"><b>Preparazioni</b><span>Rimappatura Stage 1, 2 e 3</span></span></button>
+          <button type="button" class="tile" data-go="vendita"><img src="img/vendita.jpg" alt="" style="view-transition-name: vt-vendita"><span class="tt"><b>Vendita auto</b><span>Usato controllato nella nostra officina</span></span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="band grey gutter" data-sheet aria-label="Quando scade la revisione">
+      <div class="wrap">
+        <div class="d-head reveal">
+          <h3>Quando scade la tua revisione?</h3>
+          <p>Dimmi quando l'hai fatta l'ultima volta: ti diciamo la scadenza esatta.</p>
+        </div>
+        <div class="due reveal" data-due></div>
+      </div>
+    </section>
+
+    <section class="band gutter" data-sheet aria-label="Soccorso stradale">
+      <div class="wrap reveal">
+        <div class="callout">
+          <div><h4>Auto ferma per strada?</h4><p>Chiama il 350 565 5754: arriviamo con il carro attrezzi negli orari dell'officina. <span data-status data-prefix="Soccorso">Soccorso attivo ora</span>.</p></div>
+          <a class="btn primary" href="tel:+393505655754">Chiama il soccorso</a>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ================= REVISIONI ================= -->
+  <section data-view="revisioni" hidden aria-label="Revisioni">
+    <div class="block">
+      <div class="panel" data-tone="dark">
+        <img class="bg" src="img/revisioni.jpg" alt="" style="object-position: 38% 50%; view-transition-name: vt-revisioni">
+        <div class="scrim"></div><div class="dim"></div>
+        <div class="content gutter">
+          <div class="head"><span class="eyebrow">Centro revisioni</span><h2 tabindex="-1">Revisioni</h2><p>Auto, moto, ciclomotori, tricicli, quadricicli e autocarri fino a 3,5 t. Tariffa di legge, esito subito.</p></div>
+          <div class="foot"><div class="ctas"><button type="button" class="btn primary" data-book>Prenota la revisione</button><a class="btn light" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20informazioni%20sulla%20revisione." target="_blank" rel="noopener">Scrivi su WhatsApp</a></div></div>
+        </div>
+      </div>
+      <div class="sheet gutter" data-sheet>
+        <div class="wrap">
+          <div class="d-head reveal"><h3>La revisione, senza pensieri</h3><p>Il controllo obbligatorio che dice se il veicolo è sicuro e in regola. Lo fai sulla nostra linea, allo scalo. Se trova un problema, lo sistemiamo nello stesso posto.</p></div>
+          <div class="specs reveal">
+            <div class="spec"><span class="v"><span class="tbc">79,02 €</span></span><span class="l">tariffa di legge, uguale ovunque</span></div>
+            <div class="spec"><span class="v">4 + 2</span><span class="l">la prima dopo 4 anni, poi ogni 2</span></div>
+            <div class="spec"><span class="v">≤ 3,5 t</span><span class="l">fino agli autocarri leggeri</span></div>
+            <div class="spec"><span class="v">Esito subito</span><span class="l">a fine controllo</span></div>
+          </div>
+          <div class="due reveal" data-due></div>
+          <div class="sub reveal">
+            <h4>Come funziona</h4>
+            <ol class="steps">
+              <li><b>Prenoti</b><span>Dal sito, su WhatsApp o al telefono. L'orario esatto te lo confermiamo noi.</span></li>
+              <li><b>Porti il veicolo</b><span>Con la carta di circolazione. Non serve altro.</span></li>
+              <li><b>Controlliamo</b><span>Sulla linea, in circa <span class="tbc">30 minuti</span>.</span></li>
+              <li><b>Esci con l'esito</b><span>E con la prossima scadenza segnata.</span></li>
+            </ol>
+          </div>
+          <details class="more reveal">
+            <summary>Tutti i dettagli sulla revisione</summary>
+            <div class="more-body">
+              <div><h4>Cosa controlliamo</h4>
+                <ul class="checks">
+                  <li><b>Freni</b>Efficienza su ogni ruota, freno a mano.</li>
+                  <li><b>Sterzo</b>Giochi e funzionamento.</li>
+                  <li><b>Luci</b>Fari, frecce, stop e regolazione dei fari.</li>
+                  <li><b>Pneumatici</b>Battistrada di almeno 1,6 mm, misure da libretto.</li>
+                  <li><b>Sospensioni</b>Ammortizzatori, molle, silent block.</li>
+                  <li><b>Emissioni</b>Gas di scarico; fumosità per il diesel.</li>
+                  <li><b>Rumore</b>Scarico e silenziatore.</li>
+                  <li><b>Telaio</b>Ruggine passante e danni strutturali.</li>
+                  <li><b>Visibilità</b>Parabrezza, tergicristalli, specchietti.</li>
+                  <li><b>Sicurezza</b>Cinture, spia airbag, clacson.</li>
+                  <li><b>Identità</b>Targa e telaio uguali ai documenti.</li>
+                  <li><b>Chilometri</b>Registrati nello storico ufficiale.</li>
+                </ul>
+              </div>
+              <div><h4>Gli esiti</h4>
+                <ul class="rows">
+                  <li><b>Regolare</b><span>Tutto a posto. Ci rivediamo tra due anni.</span></li>
+                  <li><b>Ripetere</b><span>C'è qualcosa da sistemare: hai un mese per ripararlo e ripresentare il veicolo. Lo ripariamo noi.</span></li>
+                  <li><b>Sospeso</b><span>Il veicolo non può circolare, se non per andare a ripararlo e alla nuova revisione.</span></li>
+                </ul>
+              </div>
+              <div><h4>Domande frequenti</h4>
+                <div class="faq">
+                  <details><summary>Si può venire senza prenotare?</summary><p><span class="tbc">Sì, se la linea è libera.</span> Con la prenotazione non aspetti.</p></details>
+                  <details><summary>Cosa succede se giro con la revisione scaduta?</summary><p>Rischi una multa e il veicolo viene sospeso dalla circolazione finché non fai la revisione.</p></details>
+                  <details><summary>Posso fare il tagliando lo stesso giorno?</summary><p>Sì, dillo quando prenoti: lo facciamo prima, così il veicolo arriva in linea già controllato.</p></details>
+                  <details><summary>Può portare il veicolo un'altra persona?</summary><p>Sì, basta la carta di circolazione.</p></details>
+                </div>
+              </div>
+            </div>
+          </details>
+          <div class="cta-row reveal"><button type="button" class="btn primary" data-book>Prenota la revisione</button><a class="btn ghost" href="tel:+393505655754">Chiama 350 565 5754</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OFFICINA ================= -->
+  <section data-view="officina" hidden aria-label="Officina">
+    <div class="block">
+      <div class="panel" data-tone="light">
+        <img class="bg" src="img/officina.jpg" alt="" style="object-position: 55% 55%; view-transition-name: vt-officina">
+        <div class="scrim"></div><div class="dim"></div>
+        <div class="content gutter">
+          <div class="head"><span class="eyebrow">Meccanica</span><h2 tabindex="-1">Officina</h2><p>Tagliandi, freni, frizione, distribuzione e diagnosi. Prima ti diciamo cosa ha l'auto e quanto costa.</p></div>
+          <div class="foot"><div class="ctas"><a class="btn primary" href="tel:+393505655754">Chiama l'officina</a><a class="btn light" href="https://wa.me/393505655754?text=Buongiorno%2C%20la%20mia%20auto%20ha%20un%20problema%3A%20" target="_blank" rel="noopener">Descrivi il problema</a></div></div>
+        </div>
+      </div>
+      <div class="sheet gutter" data-sheet>
+        <div class="wrap">
+          <div class="d-head reveal"><h3>Prima il prezzo, poi il lavoro</h3><p>Lavoriamo su <span class="tbc">tutte le marche</span>. Ti diciamo cosa va fatto subito, cosa può aspettare e quanto costa. Decidi tu.</p></div>
+          <div class="specs reveal">
+            <div class="spec"><span class="v">Diagnosi</span><span class="l">centralina e spie</span></div>
+            <div class="spec"><span class="v">Preventivo</span><span class="l">prima di iniziare</span></div>
+            <div class="spec"><span class="v">Garanzia salva</span><span class="l">il tagliando da noi non la fa perdere</span></div>
+            <div class="spec"><span class="v">Revisione qui</span><span class="l">ripari e revisioni insieme</span></div>
+          </div>
+          <div class="sub reveal">
+            <h4>Si è accesa una spia?</h4>
+            <p style="font-size:17px;color:var(--charcoal);margin-top:-16px">Tocca la spia che vedi sul tuo cruscotto: ti diciamo cosa vuol dire e cosa fare.</p>
+            <div class="dash" id="dash">
+              <div class="dash-panel"><span class="k">Il tuo cruscotto</span><div class="lamps" id="lamps"></div></div>
+              <div class="lamp-info" id="lamp-info" aria-live="polite"></div>
+            </div>
+          </div>
+          <details class="more reveal">
+            <summary>Tutti i lavori dell'officina</summary>
+            <div class="more-body">
+              <div class="cards">
+                <div class="card"><h5>Tagliando</h5><p>Olio, filtri e controlli previsti dalla casa. Timbriamo il libretto.</p></div>
+                <div class="card"><h5>Freni</h5><p>Pastiglie, dischi, liquido.</p></div>
+                <div class="card"><h5>Frizione</h5><p>Se slitta, se il pedale è duro o le marce entrano male.</p></div>
+                <div class="card"><h5>Distribuzione</h5><p>Cinghia o catena, ai km o agli anni indicati dalla casa.</p></div>
+                <div class="card"><h5>Diagnosi</h5><p>Leggiamo gli errori della centralina.</p></div>
+                <div class="card"><h5>Clima, batteria, sospensioni</h5><p>Ricarica gas, test batteria, ammortizzatori.</p></div>
+              </div>
+              <div><h4>Domande frequenti</h4>
+                <div class="faq">
+                  <details><summary>Il tagliando da voi fa perdere la garanzia della casa?</summary><p>No. Il Regolamento UE 461/2010 permette il tagliando in un'officina indipendente, se si segue il piano della casa con ricambi di qualità equivalente.</p></details>
+                  <details><summary>Quanto tempo tenete l'auto?</summary><p>Per un tagliando di solito <span class="tbc">la riconsegniamo in giornata</span>. Per lavori più lunghi ti diamo una data con il preventivo.</p></details>
+                  <details><summary>Posso mandarvi foto o video prima di venire?</summary><p>Sì: cruscotto, perdite, un rumore registrato col telefono. Ci aiutano a capire se è urgente.</p></details>
+                </div>
+              </div>
+            </div>
+          </details>
+          <div class="cta-row reveal"><a class="btn primary" href="tel:+393505655754">Chiama l'officina</a><a class="btn ghost" href="https://wa.me/393505655754?text=Buongiorno%2C%20la%20mia%20auto%20ha%20un%20problema%3A%20" target="_blank" rel="noopener">Descrivi il problema</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GOMMISTA ================= -->
+  <section data-view="gommista" hidden aria-label="Gommista">
+    <div class="block">
+      <div class="panel" data-tone="dark">
+        <img class="bg" src="img/gommista.jpg" alt="" style="object-position: 72% 50%; view-transition-name: vt-gommista">
+        <div class="scrim"></div><div class="dim"></div>
+        <div class="content gutter">
+          <div class="head"><span class="eyebrow">Pneumatici</span><h2 tabindex="-1">Gommista</h2><p>Vendita, cambio gomme, equilibratura e convergenza. Mandaci la misura, ti diamo il prezzo.</p></div>
+          <div class="foot"><div class="ctas"><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20un%20preventivo%20per%20le%20gomme.%20Misura%3A%20%20Auto%3A%20" target="_blank" rel="noopener">Preventivo gomme su WhatsApp</a><a class="btn light" href="tel:+393505655754">Chiama</a></div></div>
+        </div>
+      </div>
+      <div class="sheet gutter" data-sheet>
+        <div class="wrap">
+          <div class="d-head reveal"><h3>Gomme giuste, montate bene</h3><p>Le gomme sono l'unica cosa che tocca la strada: frenata, tenuta sul bagnato e consumi dipendono da loro.</p></div>
+          <div class="specs reveal">
+            <div class="spec"><span class="v">Vendita</span><span class="l"><span class="tbc">tutte le misure</span></span></div>
+            <div class="spec"><span class="v">Cambio</span><span class="l">smontaggio e montaggio</span></div>
+            <div class="spec"><span class="v">Equilibratura</span><span class="l">niente vibrazioni</span></div>
+            <div class="spec"><span class="v">Convergenza</span><span class="l">ruote dritte</span></div>
+          </div>
+          <div class="sub reveal">
+            <div class="split">
+              <div class="split-img"><img src="img/gomma.jpg" alt="Primo piano del battistrada di una gomma" loading="lazy"></div>
+              <div class="split-text">
+                <h4>Leggi la tua misura</h4>
+                <p>È scritta sul fianco della gomma. Tocca ogni parte della sigla.</p>
+                <div class="tyre-code" id="tyre-code" aria-label="Esempio di misura: 205/55 R16 91V"><button type="button" data-i="0">205</button><span class="sep">/</span><button type="button" data-i="1">55</button>&nbsp;<button type="button" data-i="2">R16</button>&nbsp;<button type="button" data-i="3">91</button><button type="button" data-i="4">V</button></div>
+                <ul class="tyre-legend" id="tyre-legend">
+                  <li data-i="0"><b>205</b><span>Larghezza, in millimetri.</span></li>
+                  <li data-i="1"><b>55</b><span>Altezza della spalla: il 55% della larghezza.</span></li>
+                  <li data-i="2"><b>R16</b><span>Radiale, per cerchi da 16 pollici.</span></li>
+                  <li data-i="3"><b>91</b><span>Carico: fino a 615 kg per gomma.</span></li>
+                  <li data-i="4"><b>V</b><span>Velocità: fino a 240 km/h.</span></li>
+                </ul>
+                <div><a class="btn ghost" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20un%20preventivo%20per%20le%20gomme.%20Misura%3A%20" target="_blank" rel="noopener">Mandaci la tua misura</a></div>
+              </div>
+            </div>
+          </div>
+          <details class="more reveal">
+            <summary>Tutti i dettagli sulle gomme</summary>
+            <div class="more-body">
+              <div class="cards">
+                <div class="card"><span class="k">Battistrada</span><h5>Minimo 1,6 mm</h5><p>È il limite di legge. Meglio cambiarle prima: sotto 3 mm le estive e sotto 4 mm le invernali frenano molto peggio sul bagnato.</p></div>
+                <div class="card"><span class="k">Inverno</span><h5>15 novembre – 15 aprile</h5><p>Sulle strade con l'ordinanza servono gomme invernali o catene a bordo. Tra Irpinia e Sannio molte strade ce l'hanno.</p></div>
+                <div class="card"><span class="k">Età</span><h5>Codice DOT</h5><p>Le ultime 4 cifre sono settimana e anno: 2523 vuol dire 25ª settimana del 2023. Dopo 5–6 anni la mescola indurisce.</p></div>
+              </div>
+              <div><h4>Domande frequenti</h4>
+                <div class="faq">
+                  <details><summary>Quanto ci vuole per cambiare quattro gomme?</summary><p>Con equilibratura, circa <span class="tbc">40 minuti</span>.</p></details>
+                  <details><summary>Le invernali possono avere un codice di velocità più basso del libretto?</summary><p>Sì, d'inverno sono permesse gomme M+S con indice più basso, ma non sotto Q, cioè 160 km/h.</p></details>
+                  <details><summary>Quando va fatta la convergenza?</summary><p>Con gomme nuove, dopo una botta forte o se la gomma si consuma da un lato solo.</p></details>
+                </div>
+              </div>
+            </div>
+          </details>
+          <div class="cta-row reveal"><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20un%20preventivo%20per%20le%20gomme.%20Misura%3A%20%20Auto%3A%20" target="_blank" rel="noopener">Preventivo gomme su WhatsApp</a><a class="btn ghost" href="tel:+393505655754">Chiama 350 565 5754</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SOCCORSO ================= -->
+  <section data-view="soccorso" hidden aria-label="Soccorso stradale">
+    <div class="block">
+      <div class="panel" data-tone="light">
+        <img class="bg" src="img/soccorso.jpg" alt="" style="object-position: 50% 55%; view-transition-name: vt-soccorso">
+        <div class="scrim"></div><div class="dim"></div>
+        <div class="content gutter">
+          <div class="head"><span class="eyebrow">Carro attrezzi</span><h2 tabindex="-1">Soccorso stradale</h2><p>Auto in panne? Ti veniamo a prendere e la portiamo in officina, dove la ripariamo.</p></div>
+          <div class="foot"><div class="ctas"><a class="btn primary" href="tel:+393505655754">Chiama il soccorso</a><a class="btn light" href="https://wa.me/393505655754?text=Mi%20serve%20il%20soccorso%20stradale.%20Sono%20a%3A%20%20Auto%20e%20targa%3A%20%20Cosa%20%C3%A8%20successo%3A%20" target="_blank" rel="noopener">Manda dove sei</a></div><p class="note"><span class="status" data-status data-prefix="Soccorso">Soccorso attivo ora</span> · negli orari dell'officina</p></div>
+        </div>
+      </div>
+      <div class="sheet gutter" data-sheet>
+        <div class="wrap">
+          <div class="d-head reveal"><h3>Una telefonata, un solo posto</h3><p>Carichiamo l'auto, la portiamo allo scalo e la ripariamo. Niente rimbalzi tra carro attrezzi, officina e gommista.</p></div>
+          <div class="specs reveal">
+            <div class="spec"><span class="v">350 565 5754</span><span class="l">stesso numero dell'officina</span></div>
+            <div class="spec"><span class="v">Carro attrezzi</span><span class="l">fino alla nostra officina</span></div>
+            <div class="spec"><span class="v"><span class="tbc">Zona vicina</span></span><span class="l">Montecalvo e comuni intorno</span></div>
+            <div class="spec"><span class="v">Orari officina</span><span class="l">lun–ven e sabato mattina</span></div>
+          </div>
+          <div class="sub reveal">
+            <h4>Se l'auto si ferma</h4>
+            <ol class="steps five">
+              <li><b>Quattro frecce</b><span>Accendile e accosta il più a destra possibile.</span></li>
+              <li><b>Giubbotto</b><span>Indossalo prima di scendere.</span></li>
+              <li><b>Triangolo</b><span>Ad almeno 50 metri dietro l'auto.</span></li>
+              <li><b>Al sicuro</b><span>Fuori dalla strada, oltre il guardrail se c'è.</span></li>
+              <li><b>Chiamaci</b><span>O mandaci la posizione su WhatsApp.</span></li>
+            </ol>
+          </div>
+          <div class="sub reveal"><div class="callout"><div><h4>Incidente con feriti? Chiama prima il 112.</h4><p>In autostrada il soccorso lo fanno solo i mezzi autorizzati dal gestore. Fuori dagli orari dell'officina il nostro soccorso non è attivo.</p></div><a class="btn primary" href="tel:+393505655754">Chiama il soccorso</a></div></div>
+          <details class="more reveal">
+            <summary>Cosa dirci al telefono e domande</summary>
+            <div class="more-body">
+              <div class="cards four">
+                <div class="card"><span class="k">1</span><h5>Dove sei</h5><p>Via, chilometro o un punto di riferimento. Su WhatsApp puoi mandare la posizione.</p></div>
+                <div class="card"><span class="k">2</span><h5>Che auto è</h5><p>Modello e targa.</p></div>
+                <div class="card"><span class="k">3</span><h5>Cosa è successo</h5><p>Non parte, fumo, gomma a terra, incidente.</p></div>
+                <div class="card"><span class="k">4</span><h5>Se si muove</h5><p>Se le ruote girano o se è bloccata.</p></div>
+              </div>
+              <div class="faq">
+                <details><summary>Il soccorso è attivo la sera o la domenica?</summary><p>No: negli orari dell'officina, lun–ven 8:30–13 e 14:30–19, sabato 8:30–13.</p></details>
+                <details><summary>Quanto costa?</summary><p><span class="tbc">Dipende dalla distanza: te lo diciamo al telefono, prima di partire.</span></p></details>
+                <details><summary>Se la batteria è solo scarica?</summary><p><span class="tbc">Spesso la facciamo ripartire sul posto.</span></p></details>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PREPARAZIONI ================= -->
+  <section data-view="preparazioni" hidden aria-label="Preparazioni">
+    <div class="block">
+      <div class="panel" data-tone="dark">
+        <img class="bg" src="img/preparazioni.jpg" alt="" style="object-position: 50% 55%; view-transition-name: vt-preparazioni">
+        <div class="scrim"></div><div class="dim"></div>
+        <div class="content gutter">
+          <div class="head"><span class="eyebrow">Rimappature</span><h2 tabindex="-1">Preparazioni</h2><p>Stage 1, 2 e 3. Prima controlliamo il motore, alla consegna i dati misurati prima e dopo.</p></div>
+          <div class="foot"><div class="ctas"><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20un%20preventivo%20per%20una%20preparazione.%20Auto%20e%20motore%3A%20%20Km%3A%20%20Cosa%20vorrei%20ottenere%3A%20" target="_blank" rel="noopener">Chiedi un preventivo</a><a class="btn light" href="tel:+393505655754">Chiama</a></div></div>
+        </div>
+      </div>
+      <div class="sheet gutter" data-sheet>
+        <div class="wrap">
+          <div class="d-head reveal"><h3>Più spinta, su un motore sano</h3><p>La rimappatura riscrive il programma della centralina. Prima controlliamo il motore: una preparazione su un motore stanco fa solo danni.</p></div>
+          <div class="sub reveal">
+            <div class="cards">
+              <div class="card"><span class="k">Stage 1</span><h5>Solo software</h5><p>Mappa nuova sulla meccanica di serie. Si torna all'originale quando vuoi.</p></div>
+              <div class="card"><span class="k">Stage 2</span><h5>Software e componenti</h5><p>Più scarico e aspirazione, e se serve l'intercooler. Un salto netto.</p></div>
+              <div class="card"><span class="k">Stage 3</span><h5>Su progetto</h5><p>Turbina e componenti maggiorati, frizione adeguata. Auto per auto.</p></div>
+            </div>
+          </div>
+          <details class="more reveal">
+            <summary>Come lavoriamo e domande</summary>
+            <div class="more-body">
+              <ul class="rows">
+                <li><b>Diagnosi</b><span>Controlliamo il motore e leggiamo la centralina.</span></li>
+                <li><b>Copia</b><span>Salviamo il programma originale: si torna indietro quando vuoi.</span></li>
+                <li><b>Mappa</b><span>Scritta per il tuo motore e per come guidi.</span></li>
+                <li><b>Prova</b><span>Verifica <span class="tbc">su strada e con gli strumenti</span>.</span></li>
+                <li><b>Consegna</b><span>Con i dati misurati prima e dopo. Niente promesse a occhio.</span></li>
+              </ul>
+              <div class="faq">
+                <details><summary>Quanti cavalli in più?</summary><p>Dipende dal motore: te lo diciamo dopo la diagnosi, con i valori misurati.</p></details>
+                <details><summary>Cosa cambia per assicurazione e revisione?</summary><p>Prima di ogni lavoro ti spieghiamo cosa comporta. Per le auto da pista facciamo preparazioni per uso non stradale.</p></details>
+                <details><summary>Che garanzia date?</summary><p><span class="tbc">Da definire con l'officina.</span></p></details>
+              </div>
+            </div>
+          </details>
+          <div class="cta-row reveal"><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20un%20preventivo%20per%20una%20preparazione.%20Auto%20e%20motore%3A%20%20Km%3A%20%20Cosa%20vorrei%20ottenere%3A%20" target="_blank" rel="noopener">Chiedi un preventivo</a><a class="btn ghost" href="tel:+393505655754">Chiama 350 565 5754</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= VENDITA ================= -->
+  <section data-view="vendita" hidden aria-label="Vendita auto">
+    <div class="block">
+      <div class="panel" data-tone="light">
+        <img class="bg" src="img/vendita.jpg" alt="" style="object-position: 60% 50%; view-transition-name: vt-vendita">
+        <div class="scrim"></div><div class="dim"></div>
+        <div class="content gutter">
+          <div class="head"><span class="eyebrow">Usato</span><h2 tabindex="-1">Vendita auto</h2><p>Auto usate controllate e sistemate nella nostra officina, prima di venderle. Sai cosa compri.</p></div>
+          <div class="foot"><div class="ctas"><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20cerco%20un'auto.%20Budget%3A%20%20Tipo%3A%20%20Alimentazione%3A%20%20Cambio%3A%20" target="_blank" rel="noopener">Dicci che auto cerchi</a><a class="btn light" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20vendere%20la%20mia%20auto.%20Modello%3A%20%20Anno%3A%20%20Km%3A%20" target="_blank" rel="noopener">Vendi la tua auto</a></div></div>
+        </div>
+      </div>
+      <div class="sheet gutter" data-sheet>
+        <div class="wrap">
+          <div class="d-head reveal"><h3>Controllate da noi, pezzo per pezzo</h3><p>Le compriamo alle aste professionali e da privati. Prima di venderle passano dalla nostra officina, e su ogni scheda scriviamo cosa abbiamo fatto.</p></div>
+          <div class="stock reveal">
+            <div class="empty"><h5>Stiamo preparando le prossime auto.</h5><p>Dicci cosa cerchi, quanto vuoi spendere e che alimentazione preferisci: ti scriviamo quando arriva quella giusta.</p><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20cerco%20un'auto.%20Budget%3A%20%20Tipo%3A%20%20Alimentazione%3A%20%20Cambio%3A%20" target="_blank" rel="noopener">Avvisami quando arriva</a></div>
+            <article class="car" aria-label="Esempio di scheda auto"><img src="img/esempio-auto.jpg" alt="Esempio: utilitaria bianca parcheggiata" loading="lazy"><span class="badge">ESEMPIO DI SCHEDA</span><div class="body"><h5>Così vedrai ogni auto in vendita</h5><div class="meta"><span>Anno</span><span>Km</span><span>Alimentazione</span><span>Cambio</span></div><p class="done-list"><b>Cosa abbiamo fatto:</b> i lavori in officina. <b>Cosa sapere:</b> difetti e lavori futuri, scritti chiari.</p></div></article>
+          </div>
+          <details class="more reveal">
+            <summary>Come compri, come vendi, domande</summary>
+            <div class="more-body">
+              <ol class="steps five">
+                <li><b>Scegli</b><span>Dal sito o dagli annunci su AutoScout24, Subito e Marketplace.</span></li>
+                <li><b>Vieni a vederla</b><span>Allo scalo. La provi su strada.</span></li>
+                <li><b>Sul ponte</b><span><span class="tbc">Ti mostriamo cosa abbiamo sostituito.</span></span></li>
+                <li><b>Documenti</b><span><span class="tbc">Passaggio di proprietà seguito da noi.</span></span></li>
+                <li><b>La ritiri</b><span>Con la scadenza della revisione segnata.</span></li>
+              </ol>
+              <div class="cards two">
+                <div class="card"><h5>Vendi la tua auto</h5><p>Mandaci modello, anno, km e qualche foto: ti rispondiamo con una proposta.</p></div>
+                <div class="card"><h5>Garanzia</h5><p><span class="tbc">Come previsto per l'usato venduto da un'attività.</span></p></div>
+              </div>
+              <div class="faq">
+                <details><summary>Accettate permute?</summary><p><span class="tbc">Da confermare.</span></p></details>
+                <details><summary>Si può pagare a rate?</summary><p><span class="tbc">Da confermare.</span></p></details>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTATTI ================= -->
+  <section data-view="contatti" hidden aria-label="Contatti">
+    <div class="block">
+      <div class="panel" data-tone="light">
+        <img class="bg" src="img/dove.jpg" alt="" style="object-position: 45% 50%">
+        <div class="scrim"></div><div class="dim"></div>
+        <div class="content gutter">
+          <div class="head"><span class="eyebrow">Dove siamo</span><h2 tabindex="-1">Allo scalo di Montecalvo Irpino</h2><p>Contrada Olivara 19. A 20 minuti da Ariano Irpino, 41 da Benevento.</p></div>
+          <div class="foot"><div class="ctas"><a class="btn primary" href="https://www.google.com/maps/search/?api=1&amp;query=Contrada+Olivara+19+83037+Montecalvo+Irpino" target="_blank" rel="noopener">Apri in Google Maps</a><a class="btn light" href="tel:+393505655754">Chiama 350 565 5754</a></div><p class="note"><span class="status" data-status>Aperto ora</span></p></div>
+        </div>
+      </div>
+      <div class="sheet gutter" data-sheet>
+        <div class="wrap">
+          <div class="split reveal" style="align-items:start">
+            <div class="split-text"><h4>Orari</h4>
+              <table class="hours" id="hours"><tbody>
+                <tr data-days="1,2,3,4,5"><td>Lunedì – venerdì</td><td>8:30–13:00 · 14:30–19:00</td></tr>
+                <tr data-days="6"><td>Sabato</td><td>8:30–13:00</td></tr>
+                <tr data-days="0"><td>Domenica</td><td>chiuso</td></tr>
+              </tbody></table>
+            </div>
+            <div class="split-text"><h4>Contatti</h4>
+              <ul class="rows">
+                <li><b>Telefono</b><span>350 565 5754</span></li>
+                <li><b>WhatsApp</b><span>350 565 5754</span></li>
+                <li><b>Indirizzo</b><span>Contrada Olivara 19, 83037 Montecalvo Irpino (AV)</span></li>
+                <li><b>Email</b><span><span class="tbc">info@autofficinadaniello.it</span></span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="sub reveal">
+            <div class="d-head"><p class="eyebrow" style="color:var(--steel)">Chi siamo</p><h3>Una famiglia, da circa 50 anni allo scalo</h3><p>I clienti di sempre conoscono Tony. Oggi l'officina la porta avanti Adelio, con lo stesso modo di lavorare: dire le cose come stanno e fare il prezzo giusto. ★ 4,7 su Google, 38 recensioni.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot gutter">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><b>Autofficina D'Aniello</b>Contrada Olivara 19<br>83037 Montecalvo Irpino (AV)<br>350 565 5754</div>
+      <div><b>Orari</b>Lun–ven 8:30–13 e 14:30–19<br>Sabato 8:30–13<br>Domenica chiuso</div>
+      <div><b>Servizi</b><button type="button" data-go="revisioni">Revisioni</button> · <button type="button" data-go="officina">Officina</button> · <button type="button" data-go="gommista">Gommista</button> · <button type="button" data-go="soccorso">Soccorso</button> · <button type="button" data-go="preparazioni">Preparazioni</button> · <button type="button" data-go="vendita">Vendita auto</button></div>
+      <div><b>Contatti</b><button type="button" data-go="contatti">Dove siamo e orari</button><br><button type="button" id="replay">Rivedi l'accensione</button></div>
+    </div>
+    <div class="foot-legal">
+      <span>Autofficina D'Aniello di D'Aniello Antonio · P.IVA 02980430645</span>
+      <span>Privacy · Cookie</span>
+      <span>Prova di stile · foto di repertorio da Unsplash</span>
+      <span>Modello 3D "Ferrari 458 Italia" di vicent091036, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, colore modificato</span>
+      <span><span class="tbc">Così</span> sono segnate le informazioni da confermare</span>
+    </div>
+  </div>
+</footer>
+
+<div class="drawer-wrap" id="drawer-wrap" hidden>
+  <div class="backdrop" data-close></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <button type="button" class="x" data-close aria-label="Chiudi il menu">✕</button>
+    <nav>
+      <button type="button" data-go="home">Home <span>›</span></button>
+      <button type="button" data-go="revisioni">Revisioni <span>›</span></button>
+      <button type="button" data-go="officina">Officina <span>›</span></button>
+      <button type="button" data-go="gommista">Gommista <span>›</span></button>
+      <button type="button" data-go="soccorso">Soccorso stradale <span>›</span></button>
+      <button type="button" data-go="preparazioni">Preparazioni <span>›</span></button>
+      <button type="button" data-go="vendita">Vendita auto <span>›</span></button>
+      <button type="button" data-go="contatti">Dove siamo e orari <span>›</span></button>
+    </nav>
+    <p class="info">Telefono e WhatsApp 350 565 5754<br>Contrada Olivara 19, Montecalvo Irpino<br><span data-status>Aperto ora</span></p>
+  </aside>
+</div>
+
+<div class="modal-wrap" id="book-wrap" hidden>
+  <div class="backdrop" data-close-book></div>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="book-title">
+    <button type="button" class="x" data-close-book aria-label="Chiudi">✕</button>
+    <div id="book-step">
+      <h2 id="book-title">Prenota la revisione</h2>
+      <p class="sub-t" style="margin-top:4px">Scegli giorno e fascia. L'orario esatto te lo confermiamo su WhatsApp.</p>
+      <form id="book" novalidate style="display:grid;gap:16px;margin-top:16px">
+        <div class="fields">
+          <label for="b-targa">Targa<input type="text" id="b-targa" autocomplete="off" placeholder="AB123CD"></label>
+          <label for="b-veicolo">Veicolo<select id="b-veicolo"><option>Auto</option><option>Moto</option><option>Ciclomotore</option><option>Triciclo o quadriciclo</option><option>Autocarro fino a 3,5 t</option></select></label>
+          <label for="b-giorno">Giorno<input type="date" id="b-giorno"></label>
+          <div style="display:grid;gap:6px;font-size:14px;color:var(--charcoal)"><span>Fascia</span>
+            <div class="seg" role="radiogroup" aria-label="Fascia oraria">
+              <label id="l-mat"><input type="radio" name="fascia" id="b-mat" value="mattina" checked>Mattina</label>
+              <label id="l-pom"><input type="radio" name="fascia" id="b-pom" value="pomeriggio">Pomeriggio</label>
+            </div>
+          </div>
+          <label for="b-nome">Nome<input type="text" id="b-nome" autocomplete="off"></label>
+          <label for="b-tel">Telefono<input type="tel" id="b-tel" autocomplete="off"></label>
+        </div>
+        <p class="warn" id="b-warn" aria-live="polite" hidden></p>
+        <label class="chk" for="b-prom"><input type="checkbox" id="b-prom"> Avvisami su WhatsApp alla prossima scadenza. Facoltativo.</label>
+        <button type="submit" class="btn primary">Continua su WhatsApp</button>
+        <p class="fine">I dati servono solo a fissare la revisione. Informativa privacy nel sito.</p>
+      </form>
+    </div>
+    <div class="done" id="book-done" hidden>
+      <h2>Ultimo passo</h2>
+      <p class="sub-t">Apri WhatsApp e premi Invia. Ti rispondiamo con l'orario.</p>
+      <p class="msg" id="book-msg"></p>
+      <a class="btn primary" id="book-wa" href="https://wa.me/393505655754" target="_blank" rel="noopener">Apri WhatsApp</a>
+      <button type="button" class="btn light" id="book-back">Modifica i dati</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+<script>
+(function () {
+  var hasGsap = !!(window.gsap && window.ScrollTrigger);
+  if (hasGsap) gsap.registerPlugin(ScrollTrigger, SplitText);
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var stage3d = window.__stage = window.__stage || { target: 0, active: false, reduce: reduce };
+
+  // ---------- orari: officina e soccorso seguono gli stessi ----------
+  var WEEK = [[510, 780], [870, 1140]];
+  var HOURS = { 0: [], 1: WEEK, 2: WEEK, 3: WEEK, 4: WEEK, 5: WEEK, 6: [[510, 780]] };
+  var DAYS = ["domenica", "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato"];
+  var EN = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  function hhmm(min) { var m = String(min % 60); return Math.floor(min / 60) + ":" + (m.length < 2 ? "0" + m : m); }
+  function romeNow() {
+    var parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Rome", weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
+    var get = function (t) { return parts.filter(function (p) { return p.type === t; })[0].value; };
+    return { day: EN[get("weekday")], min: Number(get("hour")) * 60 + Number(get("minute")) };
+  }
+  function status(now, who) {
+    var today = HOURS[now.day];
+    for (var i = 0; i < today.length; i++) if (now.min >= today[i][0] && now.min < today[i][1]) return { open: true, text: (who ? who + " attivo ora" : "Aperto ora") + " · fino alle " + hhmm(today[i][1]) };
+    for (var j = 0; j < today.length; j++) if (now.min < today[j][0]) return { open: false, text: (who ? who + ": " : "") + (j > 0 ? "in pausa, riapre alle " : "chiuso, apre alle ") + hhmm(today[j][0]) };
+    for (var d = 1; d <= 7; d++) { var day = (now.day + d) % 7; if (HOURS[day].length) return { open: false, text: (who ? who + ": " : "") + "chiuso, riapre " + (d === 1 ? "domani" : DAYS[day]) + " alle " + hhmm(HOURS[day][0][0]) }; }
+    return { open: false, text: "Chiuso" };
+  }
+  function paint() {
+    var now; try { now = romeNow(); } catch (e) { return; }
+    document.querySelectorAll("[data-status]").forEach(function (el) {
+      var s = status(now, el.getAttribute("data-prefix"));
+      el.textContent = s.text.charAt(0).toUpperCase() + s.text.slice(1);
+      el.classList.toggle("open", s.open);
+    });
+    document.querySelectorAll("#hours tr").forEach(function (tr) { tr.classList.toggle("today", tr.getAttribute("data-days").split(",").indexOf(String(now.day)) !== -1); });
+  }
+  paint(); setInterval(paint, 60000);
+
+  // ---------- quando scade la revisione ----------
+  var MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+  function dueDate(first, month, year) {
+    // scade l'ultimo giorno del mese, 4 anni dopo l'immatricolazione o 2 anni dopo l'ultima revisione
+    return new Date(year + (first ? 4 : 2), month + 1, 0);
+  }
+  window.__dueDate = dueDate;
+  var dueCount = 0;
+  document.querySelectorAll("[data-due]").forEach(function (root) {
+    var n = ++dueCount;
+    var today = new Date();
+    var years = "";
+    for (var y = today.getFullYear(); y >= today.getFullYear() - 8; y--) years += "<option value=\"" + y + "\"" + (y === today.getFullYear() - 2 ? " selected" : "") + ">" + y + "</option>";
+    var months = MESI.map(function (m, i) { return "<option value=\"" + i + "\"" + (i === today.getMonth() ? " selected" : "") + ">" + m.charAt(0).toUpperCase() + m.slice(1) + "</option>"; }).join("");
+    root.innerHTML =
+      "<div class=\"due-form\">" +
+        "<div class=\"lab\"><span>Che revisione devi fare?</span><div class=\"seg\" role=\"radiogroup\" aria-label=\"Tipo di revisione\">" +
+          "<label><input type=\"radio\" name=\"due-t" + n + "\" value=\"next\" checked>Le successive</label>" +
+          "<label><input type=\"radio\" name=\"due-t" + n + "\" value=\"first\">La prima, veicolo nuovo</label>" +
+        "</div></div>" +
+        "<div class=\"lab\"><span data-due-q>Mese e anno dell'ultima revisione</span><div class=\"two-col\">" +
+          "<select data-due-m aria-label=\"Mese\">" + months + "</select>" +
+          "<select data-due-y aria-label=\"Anno\">" + years + "</select>" +
+        "</div></div>" +
+        "<p style=\"font-size:13px;color:var(--steel)\">Vale per auto, moto e ciclomotori: la prima dopo 4 anni dall'immatricolazione, poi ogni 2, entro la fine del mese.</p>" +
+      "</div>" +
+      "<div class=\"due-out\" aria-live=\"polite\">" +
+        "<span class=\"k\">La tua revisione scade il</span><span class=\"date\" data-due-date></span><span class=\"left\" data-due-left></span>" +
+        "<div class=\"ctas\"><button type=\"button\" class=\"btn primary sm\" data-book>Prenota la revisione</button><a class=\"btn light sm\" data-due-wa target=\"_blank\" rel=\"noopener\" href=\"https://wa.me/393505655754\">Ricordamelo su WhatsApp</a></div>" +
+      "</div>";
+    var mSel = root.querySelector("[data-due-m]"), ySel = root.querySelector("[data-due-y]");
+    var q = root.querySelector("[data-due-q]"), out = root.querySelector(".due-out");
+    function calc() {
+      var first = root.querySelector("input[value=first]").checked;
+      q.textContent = first ? "Mese e anno di immatricolazione" : "Mese e anno dell'ultima revisione";
+      var d = dueDate(first, +mSel.value, +ySel.value);
+      var t = new Date(); t.setHours(0, 0, 0, 0);
+      var days = Math.round((d - t) / 86400000);
+      var label = d.getDate() + " " + MESI[d.getMonth()] + " " + d.getFullYear();
+      root.querySelector("[data-due-date]").textContent = label;
+      var left = root.querySelector("[data-due-left]");
+      if (days < 0) { out.setAttribute("data-state", "late"); left.textContent = "Scaduta da " + (-days) + (days === -1 ? " giorno" : " giorni") + ": prenota subito"; }
+      else if (days <= 45) { out.setAttribute("data-state", "soon"); left.textContent = days === 0 ? "Scade oggi" : "Mancano " + days + (days === 1 ? " giorno" : " giorni") + ": è il momento di prenotare"; }
+      else { out.setAttribute("data-state", "ok"); left.textContent = "Mancano " + days + " giorni"; }
+      root.querySelector("[data-due-wa]").href = "https://wa.me/393505655754?text=" + encodeURIComponent("Buongiorno, ricordatemi la revisione: scade il " + label + ". Targa: ");
+    }
+    root.addEventListener("change", calc);
+    calc();
+  });
+
+  // ---------- cruscotto delle spie ----------
+  var LAMPS = [
+    { id: "temp", c: "red", u: 3, name: "Temperatura motore", svg: "<path d=\"M12 3v10\"/><circle cx=\"12\" cy=\"16.5\" r=\"2.5\"/><path d=\"M12 6h3M12 9h3\"/><path d=\"M4 21c1.5-1 3 1 4.5 0s3 1 4.5 0 3 1 4.5 0 2 .7 2.5 0\"/>", what: "Il motore si sta scaldando troppo.", todo: "Fermati appena puoi in sicurezza e spegni il motore. Non aprire il tappo del radiatore a caldo. Chiamaci." },
+    { id: "olio", c: "red", u: 3, name: "Pressione olio", svg: "<path d=\"M3 13h9l6-4 3 1-7 7H4z\"/><path d=\"M7 13V10h4v3\"/><path d=\"M20.5 15.5c0 1.2.8 1.6.8 2.4a.8.8 0 0 1-1.6 0c0-.8.8-1.2.8-2.4z\"/>", what: "La pressione dell'olio è bassa: il motore non si lubrifica bene.", todo: "Fermati subito e spegni il motore. Non ripartire: chiama il soccorso." },
+    { id: "batt", c: "red", u: 2, name: "Batteria e ricarica", svg: "<rect x=\"3\" y=\"8\" width=\"18\" height=\"11\" rx=\"1\"/><path d=\"M7 8V6h3v2M14 8V6h3v2\"/><path d=\"M6 13.5h3M7.5 12v3M15 13.5h3\"/>", what: "L'alternatore non ricarica la batteria.", todo: "Puoi fare pochi chilometri: spegni quello che non serve e vieni subito in officina." },
+    { id: "freni", c: "red", u: 3, name: "Impianto freni", svg: "<circle cx=\"12\" cy=\"12\" r=\"5.5\"/><path d=\"M5 6.5a8 8 0 0 0 0 11M19 6.5a8 8 0 0 1 0 11\"/><path d=\"M12 9.2v3.4M12 14.6v.2\"/>", what: "Freno a mano tirato, liquido freni basso o guasto all'impianto.", todo: "Controlla il freno a mano. Se resta accesa, non guidare: chiamaci." },
+    { id: "airbag", c: "red", u: 2, name: "Airbag", svg: "<circle cx=\"8\" cy=\"5.5\" r=\"1.6\"/><path d=\"M8 8.5v5l3.5 2.5M8 11h3M6 21l2-5\"/><circle cx=\"16.5\" cy=\"10\" r=\"3.5\"/>", what: "C'è un problema all'impianto airbag: in un urto potrebbe non aprirsi.", todo: "Prenota un controllo al più presto." },
+    { id: "motore", c: "amber", u: 2, name: "Avaria motore", svg: "<path d=\"M4 10h2V8h3V6h5v2h3l2 2h1v6h-1l-2 2h-5v-2H8l-2-2H4z\"/><path d=\"M2 11v4M22 12v2\"/>", what: "La centralina ha registrato un errore del motore.", todo: "Se è fissa, vieni appena puoi. Se lampeggia, rallenta e vieni subito: rischi di danneggiare il catalizzatore." },
+    { id: "abs", c: "amber", u: 1, name: "ABS", svg: "<circle cx=\"12\" cy=\"12\" r=\"6.5\"/><path d=\"M4.5 6.5a9 9 0 0 0 0 11M19.5 6.5a9 9 0 0 1 0 11\"/><text x=\"12\" y=\"14.2\">ABS</text>", what: "L'ABS non funziona. I freni normali sì.", todo: "Guida con prudenza, soprattutto sul bagnato, e prenota un controllo." },
+    { id: "gomme", c: "amber", u: 2, name: "Pressione gomme", svg: "<path d=\"M6 6c-2 3-2 9 0 12h12c2-3 2-9 0-12z\"/><path d=\"M6 20.5h12\"/><path d=\"M12 9v4.5M12 15.8v.2\"/>", what: "Una o più gomme sono sgonfie.", todo: "Controlla e gonfia le gomme. Se si riaccende presto, potrebbe essere una foratura: passa dal gommista." },
+    { id: "cand", c: "amber", u: 1, name: "Candelette (diesel)", svg: "<path d=\"M3 12c2 0 2-3.5 4-3.5s2 7 4 7 2-7 4-7 2 3.5 4 3.5 1.5-1 2-1.5\"/><path d=\"M3 7v10\"/>", what: "Fissa all'avvio: il motore si sta preriscaldando.", todo: "Aspetta che si spenga prima di avviare. Se lampeggia mentre guidi, c'è un guasto: vieni in officina." },
+    { id: "fap", c: "amber", u: 1, name: "Filtro antiparticolato", svg: "<rect x=\"4\" y=\"7\" width=\"16\" height=\"10\" rx=\"2\"/><circle cx=\"8.5\" cy=\"10.5\" r=\".6\"/><circle cx=\"12\" cy=\"12\" r=\".6\"/><circle cx=\"15.5\" cy=\"10.5\" r=\".6\"/><circle cx=\"9.5\" cy=\"14\" r=\".6\"/><circle cx=\"14.5\" cy=\"14\" r=\".6\"/><path d=\"M1.5 12H4M20 12h2.5\"/>", what: "Il filtro antiparticolato (FAP) è pieno.", todo: "Fai 15–20 minuti a velocità costante in extraurbana per rigenerarlo. Se resta accesa, vieni in officina." }
+  ];
+  var lampsEl = document.getElementById("lamps"), infoEl = document.getElementById("lamp-info");
+  if (lampsEl) {
+    lampsEl.innerHTML = LAMPS.map(function (l, i) { return "<button type=\"button\" class=\"lampbtn\" data-i=\"" + i + "\" data-c=\"" + l.c + "\" aria-label=\"" + l.name + "\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\">" + l.svg + "</svg></button>"; }).join("");
+    var showLamp = function (i) {
+      var l = LAMPS[i];
+      lampsEl.querySelectorAll(".lampbtn").forEach(function (b) { b.classList.toggle("on", +b.getAttribute("data-i") === i); });
+      infoEl.innerHTML = "<span class=\"tag\" data-c=\"" + l.c + "\">" + (l.c === "red" ? "Spia rossa" : "Spia arancione") + "</span>" +
+        "<h5>" + l.name + "</h5><p><b>Cosa vuol dire.</b> " + l.what + "</p><p><b>Cosa fare.</b> " + l.todo + "</p>" +
+        "<div style=\"display:grid;gap:6px\"><span style=\"font-size:12px;color:var(--steel)\">Urgenza</span><div class=\"urg\" data-l=\"" + l.u + "\"><i></i><i></i><i></i></div></div>" +
+        "<div><a class=\"btn ghost sm\" target=\"_blank\" rel=\"noopener\" href=\"https://wa.me/393505655754?text=" + encodeURIComponent("Buongiorno, si è accesa la spia: " + l.name + ". Vi mando la foto del cruscotto. Auto: ") + "\">Mandaci la foto della spia</a></div>";
+    };
+    lampsEl.addEventListener("click", function (e) { var b = e.target.closest(".lampbtn"); if (b) showLamp(+b.getAttribute("data-i")); });
+    showLamp(5);
+  }
+
+  // ---------- misura della gomma ----------
+  var codeBtns = document.querySelectorAll("#tyre-code button"), legend = document.querySelectorAll("#tyre-legend li");
+  function lightTyre(i) {
+    codeBtns.forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-i") === i); });
+    legend.forEach(function (li) { li.classList.toggle("on", li.getAttribute("data-i") === i); });
+  }
+  codeBtns.forEach(function (b) { ["mouseenter", "focus", "click"].forEach(function (ev) { b.addEventListener(ev, function () { lightTyre(b.getAttribute("data-i")); }); }); });
+
+  // ---------- menu laterale ----------
+  var drawerWrap = document.getElementById("drawer-wrap"), openMenu = document.getElementById("open-menu");
+  function showDrawer() {
+    drawerWrap.hidden = false; openMenu.setAttribute("aria-expanded", "true"); drawerWrap.querySelector(".x").focus();
+    if (hasGsap && !reduce) {
+      gsap.fromTo("#drawer", { xPercent: 100 }, { xPercent: 0, duration: 0.55, ease: "expo.out" });
+      gsap.fromTo("#drawer nav button", { x: 24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.5, stagger: 0.04, delay: 0.12, ease: "power3.out" });
+    }
+  }
+  function hideDrawer() { drawerWrap.hidden = true; openMenu.setAttribute("aria-expanded", "false"); }
+  openMenu.addEventListener("click", showDrawer);
+  drawerWrap.querySelectorAll("[data-close]").forEach(function (el) { el.addEventListener("click", function () { hideDrawer(); openMenu.focus(); }); });
+
+  // ---------- prenotazione ----------
+  var bookWrap = document.getElementById("book-wrap");
+  var f = { targa: document.getElementById("b-targa"), veicolo: document.getElementById("b-veicolo"), giorno: document.getElementById("b-giorno"), mat: document.getElementById("b-mat"), pom: document.getElementById("b-pom"), lPom: document.getElementById("l-pom"), nome: document.getElementById("b-nome"), tel: document.getElementById("b-tel"), prom: document.getElementById("b-prom"), warn: document.getElementById("b-warn") };
+  var fmt = new Intl.DateTimeFormat("it-IT", { weekday: "long", day: "numeric", month: "long" });
+  function iso(d) { var m = String(d.getMonth() + 1), g = String(d.getDate()); return d.getFullYear() + "-" + (m.length < 2 ? "0" + m : m) + "-" + (g.length < 2 ? "0" + g : g); }
+  function parse(v) { var p = v.split("-"); return p.length === 3 ? new Date(+p[0], +p[1] - 1, +p[2]) : null; }
+  var next = new Date(); do { next.setDate(next.getDate() + 1); } while (next.getDay() === 0);
+  f.giorno.value = iso(next); f.giorno.min = iso(new Date());
+  function check() {
+    f.targa.value = f.targa.value.toUpperCase();
+    var d = parse(f.giorno.value), dow = d ? d.getDay() : -1;
+    f.pom.disabled = dow === 6; f.lPom.classList.toggle("off", dow === 6);
+    if (dow === 6 && f.pom.checked) f.mat.checked = true;
+    if (dow === 0) { f.warn.textContent = "La domenica siamo chiusi: scegli un altro giorno."; f.warn.hidden = false; return false; }
+    if (dow === 6) { f.warn.textContent = "Il sabato siamo aperti solo la mattina, 8:30–13."; f.warn.hidden = false; return true; }
+    f.warn.hidden = true; return true;
+  }
+  var form = document.getElementById("book");
+  form.addEventListener("input", check); form.addEventListener("change", check);
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!check()) return;
+    if (!f.targa.value.trim() || !f.nome.value.trim() || !f.tel.value.trim()) { f.warn.textContent = "Scrivi targa, nome e telefono per continuare."; f.warn.hidden = false; return; }
+    var d = parse(f.giorno.value);
+    var lines = ["Richiesta revisione dal sito", "Targa: " + f.targa.value.trim(), "Veicolo: " + f.veicolo.value, "Giorno: " + (d ? fmt.format(d) : "-") + ", " + (f.mat.checked ? "mattina" : "pomeriggio"), "Nome: " + f.nome.value.trim(), "Telefono: " + f.tel.value.trim(), "Promemoria prossima scadenza: " + (f.prom.checked ? "sì" : "no")];
+    document.getElementById("book-msg").textContent = lines.join("\n");
+    document.getElementById("book-wa").href = "https://wa.me/393505655754?text=" + encodeURIComponent(lines.join("\n"));
+    document.getElementById("book-step").hidden = true; document.getElementById("book-done").hidden = false;
+  });
+  document.getElementById("book-back").addEventListener("click", function () { document.getElementById("book-done").hidden = true; document.getElementById("book-step").hidden = false; });
+  function showBook() {
+    bookWrap.hidden = false; check(); setTimeout(function () { f.targa.focus(); }, 50);
+    if (hasGsap && !reduce) gsap.fromTo(".modal", { y: 28, autoAlpha: 0, scale: 0.98 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.5, ease: "expo.out" });
+  }
+  document.addEventListener("click", function (e) { if (e.target.closest("[data-book]")) showBook(); });
+  bookWrap.querySelectorAll("[data-close-book]").forEach(function (b) { b.addEventListener("click", function () { bookWrap.hidden = true; }); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if (!bookWrap.hidden) bookWrap.hidden = true; else if (!drawerWrap.hidden) hideDrawer();
+  });
+
+  // ---------- pagine e passaggi fluidi ----------
+  var views = {};
+  document.querySelectorAll("[data-view]").forEach(function (v) { views[v.getAttribute("data-view")] = v; });
+  var current = "home", ctx = null, homeScroll = 0;
+  var top = document.getElementById("top");
+  function tone(t) { return function () { top.setAttribute("data-tone", t); }; }
+
+  function setupView(name) {
+    if (!hasGsap) return;
+    var root = views[name];
+    ctx = gsap.context(function () {
+      // la testata segue quello che c'è sotto
+      root.querySelectorAll(".panel, .stage, [data-sheet]").forEach(function (el) {
+        var t = el.matches("[data-sheet]") ? "solid" : el.getAttribute("data-tone");
+        ScrollTrigger.create({ trigger: el, start: "top 56px", end: "bottom 56px", onEnter: tone(t), onEnterBack: tone(t) });
+      });
+      ScrollTrigger.create({ trigger: document.querySelector(".site-foot"), start: "top 56px", onEnter: tone("solid"), onEnterBack: tone("solid") });
+
+      if (!reduce) {
+        // il foglio bianco sale sopra la foto, che arretra e si spegne
+        root.querySelectorAll(".block").forEach(function (block) {
+          var panel = block.querySelector(".panel"), sheet = block.querySelector("[data-sheet]");
+          if (!panel || !sheet) return;
+          gsap.timeline({ scrollTrigger: { trigger: sheet, start: "top bottom", end: "top top", scrub: true } })
+            .fromTo(panel.querySelector(".bg"), { scale: 1 }, { scale: 0.9, ease: "none", immediateRender: false }, 0)
+            .fromTo(panel.querySelector(".dim"), { opacity: 0 }, { opacity: 0.7, ease: "none", immediateRender: false }, 0)
+            .fromTo(panel.querySelector(".content"), { y: 0, opacity: 1 }, { y: -80, opacity: 0, ease: "none", immediateRender: false }, 0);
+        });
+        ScrollTrigger.batch(root.querySelectorAll(".reveal"), { start: "top 90%", once: true, onEnter: function (els) { gsap.from(els, { y: 40, duration: 0.9, ease: "power3.out", stagger: 0.08 }); } });
+      }
+
+      // la scena 3D: si ferma mentre scorri e l'auto entra, sale sul ponte e si gira
+      if (name === "home") {
+        var stage = document.getElementById("stage");
+        var caps = stage.querySelectorAll(".cap"), bar = document.getElementById("stage-bar"), hint = document.getElementById("stage-hint");
+        var setCap = function (p) {
+          var idx = p < 0.33 ? 0 : p < 0.72 ? 1 : 2;
+          caps.forEach(function (c, i) { c.classList.toggle("on", i === idx); });
+          hint.style.opacity = p > 0.85 ? 0 : 1;
+        };
+        if (reduce) {
+          stage3d.target = 1; setCap(1); bar.style.transform = "scaleX(1)";
+        } else {
+          ScrollTrigger.create({
+            trigger: stage, start: "top top", end: "+=260%", pin: true, anticipatePin: 1,
+            onUpdate: function (self) { stage3d.target = self.progress; bar.style.transform = "scaleX(" + self.progress + ")"; setCap(self.progress); },
+            onToggle: function (self) { if (self.isActive) top.setAttribute("data-tone", "light"); }
+          });
+        }
+      }
+    }, root);
+    ScrollTrigger.refresh();
+  }
+
+  function swap(name) {
+    if (ctx) { ctx.revert(); ctx = null; }
+    if (current === "home") homeScroll = window.scrollY;
+    Object.keys(views).forEach(function (k) { views[k].hidden = k !== name; });
+    document.querySelectorAll(".links button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-go") === name); });
+    current = name;
+    stage3d.active = name === "home";
+    top.setAttribute("data-tone", views[name].querySelector(".panel").getAttribute("data-tone"));
+    setupView(name);
+    window.scrollTo(0, name === "home" ? homeScroll : 0);
+    if (hasGsap) ScrollTrigger.update();
+    var h = views[name].querySelector("h1, h2"); if (h) h.focus({ preventScroll: true });
+  }
+
+  function go(name) {
+    if (!views[name] || name === current) { if (name === current) window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); return; }
+    hideDrawer();
+    if (document.startViewTransition && !reduce) {
+      document.startViewTransition(function () { swap(name); });
+    } else if (hasGsap && !reduce) {
+      gsap.to("#views", { opacity: 0, duration: 0.2, onComplete: function () { swap(name); gsap.to("#views", { opacity: 1, duration: 0.35 }); } });
+    } else {
+      swap(name);
+    }
+  }
+  window.dAniello = { go: go };
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-go]");
+    if (t) { e.preventDefault(); go(t.getAttribute("data-go")); }
+  });
+
+  // ---------- accensione ----------
+  function buildGauge() {
+    var svg = document.getElementById("gauge"), cx = 120, cy = 120, r = 92, out = "";
+    function pt(v, rad) { var a = (-210 + v * 30) * Math.PI / 180; return [cx + rad * Math.cos(a), cy + rad * Math.sin(a)]; }
+    for (var v = 0; v <= 8; v += 0.5) {
+      var major = v % 1 === 0, a = pt(v, r), b = pt(v, major ? r - 14 : r - 8);
+      out += "<line class=\"tick" + (major ? "" : " min") + "\" x1=\"" + a[0].toFixed(1) + "\" y1=\"" + a[1].toFixed(1) + "\" x2=\"" + b[0].toFixed(1) + "\" y2=\"" + b[1].toFixed(1) + "\"/>";
+      if (major) { var n = pt(v, r - 30); out += "<text class=\"num\" x=\"" + n[0].toFixed(1) + "\" y=\"" + n[1].toFixed(1) + "\">" + v + "</text>"; }
+    }
+    var s = pt(6.5, r + 6), e = pt(8, r + 6);
+    out += "<path class=\"red\" d=\"M" + s[0].toFixed(1) + " " + s[1].toFixed(1) + " A" + (r + 6) + " " + (r + 6) + " 0 0 1 " + e[0].toFixed(1) + " " + e[1].toFixed(1) + "\"/>";
+    out += "<text class=\"unit\" x=\"120\" y=\"170\">× 1000 GIRI</text>";
+    out += "<g id=\"needle\"><line class=\"needle\" x1=\"120\" y1=\"120\" x2=\"" + (cx - (r - 22)) + "\" y2=\"120\"/></g><circle class=\"hub\" cx=\"120\" cy=\"120\" r=\"6\"/>";
+    svg.innerHTML = out;
+    document.getElementById("ign-word").innerHTML = "D'ANIELLO".split("").map(function (ch) { return "<span>" + ch + "</span>"; }).join("");
+  }
+  var heroSplit = null;
+  function heroIn() {
+    if (!hasGsap || reduce) return;
+    if (heroSplit) heroSplit.revert();
+    var title = heroSplit = SplitText.create("#hero-title", { type: "words", mask: "words" });
+    gsap.timeline({ defaults: { ease: "expo.out" } })
+      .from("#home-hero .bg", { scale: 1.16, duration: 2.4 }, 0)
+      .from(title.words, { yPercent: 110, duration: 1.1, stagger: 0.08 }, 0.15)
+      .from("#home-hero .head p", { y: 18, autoAlpha: 0, duration: 0.9 }, 0.45)
+      .from("#home-hero .ctas > *", { y: 18, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, 0.6)
+      .from("#home-hero .note, #home-hero .chev", { autoAlpha: 0, duration: 0.8 }, 0.8);
+  }
+  function ignite(force) {
+    var seen = false;
+    try { seen = sessionStorage.getItem("dan-ignition") === "1"; } catch (e) {}
+    if (!hasGsap || reduce || (seen && !force)) { heroIn(); return; }
+    try { sessionStorage.setItem("dan-ignition", "1"); } catch (e) {}
+    var ov = document.getElementById("ignition");
+    ov.hidden = false; buildGauge();
+    document.documentElement.style.overflow = "hidden";
+    var tl = gsap.timeline({ onComplete: done });
+    function done() {
+      document.documentElement.style.overflow = "";
+      ov.hidden = true; gsap.set(ov, { clearProps: "all" });
+      heroIn();
+    }
+    // la lancetta disegnata punta a sinistra: -30° è lo zero, 210° gli 8000 giri, -3° il minimo
+    gsap.set("#needle", { rotation: -30, svgOrigin: "120 120" });
+    tl.from("#gauge .tick, #gauge .num", { autoAlpha: 0, duration: 0.25, stagger: 0.025, ease: "power1.out" }, 0.1)
+      .from("#gauge .red, #gauge .unit", { autoAlpha: 0, duration: 0.3 }, 0.45)
+      .to("#needle", { rotation: 210, duration: 0.7, ease: "power2.out" }, 0.55)
+      .to(".lamp", { opacity: 1, duration: 0.08, repeat: 3, yoyo: true, ease: "none" }, 0.7)
+      .to(".lamp", { opacity: 0.9, duration: 0.3 }, 1.02)
+      .to("#needle", { rotation: -3, duration: 0.8, ease: "power3.inOut" }, 1.3)
+      .from("#ign-word span", { yPercent: 100, autoAlpha: 0, duration: 0.5, stagger: 0.04, ease: "power3.out" }, 1.4)
+      .to(ov, { yPercent: -100, duration: 0.9, ease: "expo.inOut" }, 2.3);
+    document.getElementById("skip").onclick = function () { tl.progress(1); };
+  }
+  document.getElementById("replay").addEventListener("click", function () {
+    if (current !== "home") swap("home");
+    window.scrollTo(0, 0);
+    ignite(true);
+  });
+
+  function start() {
+    var first = (location.hash || "").replace("#", "");
+    if (views[first] && first !== "home") { swap(first); return; }
+    setupView("home");
+    stage3d.active = true;
+    ignite(false);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start, start); else window.addEventListener("load", start);
+})();
+</script>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+</script>
+<script type="module">
+// La scena 3D: l'auto entra in officina, sale sul ponte e gira mentre scorri; alla fine i punti da toccare.
+const stageEl = document.getElementById("stage");
+const canvas = document.getElementById("car-canvas");
+const loadEl = document.getElementById("stage-load");
+const fallbackEl = document.getElementById("stage-fallback");
+const state = window.__stage = window.__stage || { target: 0, active: true, reduce: false };
+
+function showFallback(why) {
+  console.warn("Scena 3D non disponibile:", why);
+  loadEl.hidden = true;
+  canvas.hidden = true;
+  fallbackEl.hidden = false;
+  document.getElementById("hots").hidden = true;
+}
+
+async function boot() {
+  let THREE, GLTFLoader, DRACOLoader, RoomEnvironment;
+  try {
+    THREE = await import("three");
+    ({ GLTFLoader } = await import("three/addons/loaders/GLTFLoader.js"));
+    ({ DRACOLoader } = await import("three/addons/loaders/DRACOLoader.js"));
+    ({ RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js"));
+  } catch (e) { showFallback(e); return; }
+
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
+  } catch (e) { showFallback(e); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+
+  // sfondo trasparente: lo studio chiaro è il gradiente CSS dietro la tela, così non si vede il bordo del pavimento
+  renderer.setClearColor(0x000000, 0);
+  const scene = new THREE.Scene();
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+
+  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+
+  // modello: prima Draco con WebAssembly, poi Draco in JavaScript, poi la copia senza compressione
+  // i modelli sono pubblicati come testo base64 (.txt), perché la pagina non serve file .glb
+  const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("tempo scaduto")), ms))]);
+  const fetchGlb = async (path) => {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error(path + " " + res.status);
+    const bin = atob((await res.text()).replace(/\s+/g, ""));
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return bytes.buffer;
+  };
+  const parse = (loader, buf) => new Promise((resolve, reject) => loader.parse(buf, "", resolve, reject));
+  let dracoBuf = null;
+  const loadDraco = async (type) => {
+    if (!dracoBuf) dracoBuf = await fetchGlb("3d/ferrari.glb.txt");
+    const draco = new DRACOLoader();
+    draco.setDecoderPath("3d/draco/");
+    draco.setDecoderConfig({ type });
+    const loader = new GLTFLoader();
+    loader.setDRACOLoader(draco);
+    try { return await parse(loader, dracoBuf.slice(0)); } finally { draco.dispose(); }
+  };
+  const loadPlain = async () => parse(new GLTFLoader(), await fetchGlb("3d/ferrari-riserva.glb.txt"));
+  let gltf = null;
+  for (const attempt of [() => loadDraco("wasm"), () => loadDraco("js"), loadPlain]) {
+    try { gltf = await withTimeout(attempt(), 25000); break; } catch (e) { console.warn("3D: tentativo fallito", e); }
+  }
+  if (!gltf) { showFallback("modello non caricato"); return; }
+
+  const car = gltf.scene.children[0];
+  const body = new THREE.MeshPhysicalMaterial({ color: 0x1d47c8, metalness: 0.85, roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.04 });
+  const details = new THREE.MeshStandardMaterial({ color: 0xd9dde3, metalness: 1, roughness: 0.35 });
+  const glass = new THREE.MeshPhysicalMaterial({ color: 0x0e1116, metalness: 0.2, roughness: 0.05, transparent: true, opacity: 0.55 });
+  const set = (n, m) => { const o = car.getObjectByName(n); if (o) o.material = m; };
+  set("body", body); ["rim_fl", "rim_fr", "rim_rr", "rim_rl", "trim"].forEach((n) => set(n, details)); set("glass", glass);
+  const wheels = ["wheel_fl", "wheel_fr", "wheel_rl", "wheel_rr"].map((n) => car.getObjectByName(n)).filter(Boolean);
+
+  const rig = new THREE.Group();
+  rig.add(car);
+  scene.add(rig);
+  const box = new THREE.Box3().setFromObject(car);
+  const size = box.getSize(new THREE.Vector3());
+  const fl = car.getObjectByName("wheel_fl"), rl = car.getObjectByName("wheel_rl");
+  const flPos = fl ? fl.getWorldPosition(new THREE.Vector3()) : new THREE.Vector3(0.8, 0.33, -1.3);
+  const rlPos = rl ? rl.getWorldPosition(new THREE.Vector3()) : new THREE.Vector3(0.8, 0.33, 1.3);
+  const f = Math.sign(flPos.z - rlPos.z) || -1; // verso del muso lungo z
+  const s = Math.sign(flPos.x) || 1;           // lato della ruota anteriore sinistra
+  const zFront = f > 0 ? box.max.z : box.min.z, zRear = f > 0 ? box.min.z : box.max.z;
+  const along = (t) => zRear + (zFront - zRear) * t;
+  const halfW = size.x / 2;
+
+  // ombra a terra, che resta sul pavimento quando l'auto sale: l'occlusione del modello diventa trasparenza
+  const shadowMat = new THREE.MeshBasicMaterial({ color: 0x0b0d10, transparent: true, opacity: 0, depthWrite: false, toneMapped: false });
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(0.655 * 4, 1.3 * 4), shadowMat);
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.004; shadow.renderOrder = 2;
+  scene.add(shadow);
+  new THREE.ImageLoader().load("3d/ferrari_ao.png", (img) => {
+    const cv = document.createElement("canvas");
+    cv.width = img.width; cv.height = img.height;
+    const g = cv.getContext("2d");
+    g.drawImage(img, 0, 0);
+    const px = g.getImageData(0, 0, cv.width, cv.height);
+    for (let i = 0; i < px.data.length; i += 4) { const a = 255 - px.data[i]; px.data[i] = px.data[i + 1] = px.data[i + 2] = a; px.data[i + 3] = 255; }
+    g.putImageData(px, 0, 0);
+    shadowMat.alphaMap = new THREE.CanvasTexture(cv);
+    shadowMat.opacity = 0.85;
+    shadowMat.needsUpdate = true;
+  });
+  // ombra morbida larga, per staccare l'auto dallo sfondo
+  const soft = document.createElement("canvas"); soft.width = soft.height = 128;
+  const sg = soft.getContext("2d"), grad = sg.createRadialGradient(64, 64, 4, 64, 64, 64);
+  grad.addColorStop(0, "rgba(255,255,255,1)"); grad.addColorStop(0.4, "rgba(255,255,255,0.45)"); grad.addColorStop(1, "rgba(255,255,255,0)");
+  sg.fillStyle = grad; sg.fillRect(0, 0, 128, 128);
+  const halo = new THREE.Mesh(new THREE.PlaneGeometry(6, 7.5), new THREE.MeshBasicMaterial({ color: 0x0b0d10, alphaMap: new THREE.CanvasTexture(soft), transparent: true, opacity: 0.07, depthWrite: false, toneMapped: false }));
+  halo.rotation.x = -Math.PI / 2; halo.position.y = 0.002;
+  scene.add(halo);
+
+  // il ponte sollevatore a due colonne
+  const liftMat = new THREE.MeshStandardMaterial({ color: 0x9aa1ab, metalness: 0.7, roughness: 0.35 });
+  const armMat = new THREE.MeshStandardMaterial({ color: 0x2350d8, metalness: 0.4, roughness: 0.4 });
+  const lift = new THREE.Group();
+  const colX = halfW + 0.42, midZ = (flPos.z + rlPos.z) / 2;
+  const arms = [];
+  [-1, 1].forEach((side) => {
+    const col = new THREE.Mesh(new THREE.BoxGeometry(0.18, 2.05, 0.28), liftMat);
+    col.position.set(side * colX, 1.025, midZ);
+    const foot = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.05, 0.6), liftMat);
+    foot.position.set(side * colX, 0.025, midZ);
+    lift.add(col, foot);
+    [-1, 1].forEach((dir) => {
+      const arm = new THREE.Mesh(new THREE.BoxGeometry(colX - 0.35, 0.05, 0.09), armMat);
+      arm.position.set(side * (colX + 0.35) / 2, 0.1, midZ + dir * 0.55);
+      arm.rotation.y = dir * side * 0.25;
+      lift.add(arm); arms.push(arm);
+    });
+  });
+  lift.visible = false;
+  scene.add(lift);
+
+  // punti da toccare: posizione nell'auto e verso dove guardano
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  const HOT = {
+    ruota: { p: V(flPos.x + s * 0.12, flPos.y, flPos.z), n: V(s, 0, 0) },
+    faro: { p: V(s * halfW * 0.72, 0.62, along(0.93)), n: V(s * 0.6, 0, f).normalize() },
+    freno: { p: V(rlPos.x + s * 0.12, rlPos.y, rlPos.z), n: V(s, 0, 0) },
+    motore: { p: V(0, box.max.y - 0.12, along(0.22)), n: V(s * 0.55, 0.85, 0).normalize() },
+    traino: { p: V(0, 0.36, zFront), n: V(0, 0, f) },
+    porta: { p: V(s * halfW * 1.01, 0.72, along(0.52)), n: V(s, 0, 0) },
+  };
+  const hotEls = [...document.querySelectorAll("#hots .hot")].map((el) => ({ el, h: HOT[el.dataset.hot] }));
+
+  // camera: angoli attorno all'auto
+  const thetaSide = Math.atan2(s, 0);
+  const thetaFront = Math.atan2(0, f);
+  let dFront = thetaFront - thetaSide;
+  while (dFront > Math.PI) dFront -= Math.PI * 2;
+  while (dFront < -Math.PI) dFront += Math.PI * 2;
+  const dir = Math.sign(dFront) || 1;
+
+  let rFit = 6, w = 1, h = 1;
+  function resize() {
+    if (!stageEl.clientWidth || !stageEl.clientHeight) return;
+    w = stageEl.clientWidth; h = stageEl.clientHeight;
+    renderer.setSize(w, h, false);
+    const aspect = w / h;
+    camera.fov = aspect < 0.8 ? 46 : 32;
+    camera.aspect = aspect;
+    camera.updateProjectionMatrix();
+    const hfov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * aspect);
+    // su telefono l'auto può sfiorare i bordi di lato: è più grande e si legge meglio
+    rFit = Math.max(size.z * (aspect < 0.8 ? 0.58 : 0.62) / Math.tan(hfov / 2), 5.2);
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  // trascinare per girare l'auto alla fine
+  let yaw = 0, dragging = false, lastX = 0;
+  canvas.addEventListener("pointerdown", (e) => { if (cur > 0.86) { dragging = true; lastX = e.clientX; } });
+  window.addEventListener("pointermove", (e) => { if (dragging) { yaw -= (e.clientX - lastX) * 0.008; lastX = e.clientX; } });
+  window.addEventListener("pointerup", () => { dragging = false; });
+
+  const clamp = (x) => Math.min(1, Math.max(0, x));
+  const eOut = (x) => 1 - Math.pow(1 - x, 3);
+  const eIO = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+  const tmp = new THREE.Vector3(), camPos = new THREE.Vector3(), target = new THREE.Vector3();
+  let cur = state.reduce ? 1 : 0;
+  let visible = true;
+  new IntersectionObserver((en) => { visible = en[0].isIntersecting; }, { rootMargin: "100px" }).observe(stageEl);
+
+  function frame() {
+    requestAnimationFrame(frame);
+    if (!state.active || !visible) return;
+    if (stageEl.clientWidth !== w || stageEl.clientHeight !== h) resize();
+    const t = state.reduce ? 1 : state.target;
+    cur += (t - cur) * 0.1;
+    if (Math.abs(t - cur) < 0.0004) cur = t;
+
+    const a = eOut(clamp(cur / 0.33));
+    const b = eIO(clamp((cur - 0.33) / 0.39));
+    const c = eIO(clamp((cur - 0.72) / 0.14));
+    const liftT = eIO(clamp((cur - 0.42) / 0.26));
+    const hotT = clamp((cur - 0.8) / 0.1);
+
+    // l'auto entra dal fondo e si ferma tra le colonne
+    const dist = 9 * (1 - a);
+    rig.position.set(0, liftT * 0.72, -f * dist);
+    wheels.forEach((wh) => { wh.rotation.x = f * (9 - dist) / 0.34; });
+    shadow.position.set(0, 0.004, -f * dist);
+    halo.position.set(0, 0.002, -f * dist);
+    shadow.scale.setScalar(1 + liftT * 0.25);
+    if (shadowMat.alphaMap) shadowMat.opacity = 0.85 - liftT * 0.45;
+    lift.visible = cur > 0.3;
+    arms.forEach((arm) => { arm.position.y = 0.1 + liftT * 0.72; });
+
+    const theta = thetaSide + dir * (Math.PI * 2 * b + (Math.PI / 4) * c) + yaw;
+    const r = rFit * (1 - 0.1 * c);
+    const camY = 1.3 + 1.1 * b - 0.05 * c;
+    camPos.set(Math.sin(theta) * r, camY, Math.cos(theta) * r);
+    camera.position.copy(camPos);
+    target.set(0, 0.5 + liftT * 0.55, 0);
+    camera.lookAt(target);
+    renderer.render(scene, camera);
+
+    // punti da toccare
+    hotEls.forEach(({ el, h: spot }) => {
+      tmp.copy(spot.p).add(rig.position);
+      const facing = spot.n.dot(camPos.clone().sub(tmp).normalize());
+      const on = hotT > 0 && facing > 0.12;
+      tmp.project(camera);
+      const x = (tmp.x * 0.5 + 0.5) * w, y = (-tmp.y * 0.5 + 0.5) * h;
+      // vicino al bordo destro l'etichetta passa a sinistra del punto
+      const flip = x + el.offsetWidth > w - 8;
+      el.classList.toggle("flip", flip);
+      const tx = flip ? x - el.offsetWidth + 9 : x - 9;
+      el.style.transform = "translate(" + tx.toFixed(1) + "px," + (y - 9).toFixed(1) + "px)";
+      el.style.opacity = on ? hotT : 0;
+      el.style.pointerEvents = on && hotT > 0.5 ? "auto" : "none";
+      el.tabIndex = on ? 0 : -1;
+    });
+  }
+  loadEl.hidden = true;
+  frame();
+}
+
+// carica la scena solo quando serve: quando la home è vicina alla scena
+let booted = false;
+const io = new IntersectionObserver((entries) => {
+  if (!booted && entries.some((e) => e.isIntersecting)) { booted = true; io.disconnect(); boot().catch(showFallback); }
+}, { rootMargin: "150% 0px" });
+io.observe(stageEl);
+</script>
