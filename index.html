@@ -54,7 +54,9 @@ button { font-family: var(--font); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.45s; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); }
 ::view-transition-group(*) { animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); }
 .top { view-transition-name: topbar; }
-@media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { :root:not(.motion-on)::view-transition-group(*), :root:not(.motion-on)::view-transition-old(*), :root:not(.motion-on)::view-transition-new(*) { animation: none !important; } }
+.motion-pill { position: fixed; z-index: 80; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); max-width: calc(100% - 32px); background: var(--onyx); color: var(--white); border: 0; border-radius: 999px; padding: 10px 18px; font: 500 13px var(--font); cursor: pointer; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); }
+.motion-pill b { color: #8fb0ff; font-weight: 600; }
 
 /* ---------- accensione ---------- */
 .ignition { position: fixed; inset: 0; z-index: 90; background: var(--black); color: var(--white); display: grid; place-items: center; overflow: clip; }
@@ -383,6 +385,8 @@ button { font-family: var(--font); }
   <button type="button" class="skip" id="skip">Salta</button>
 </div>
 
+<button type="button" class="motion-pill" id="motion-pill" hidden>Il telefono ha le animazioni ridotte · <b>Attivale</b></button>
+
 <!-- ================= TESTATA ================= -->
 <header class="top gutter" id="top" data-tone="light">
   <div class="top-inner">
@@ -406,7 +410,7 @@ button { font-family: var(--font); }
   <!-- ================= HOME ================= -->
   <section data-view="home" aria-label="Home">
     <div class="panel" id="home-hero" data-tone="light">
-      <img class="bg" src="img/home.jpg" alt="Officina con un'auto sul ponte e un meccanico al lavoro" style="object-position: 62% 50%">
+      <picture><source media="(max-width: 900px)" srcset="img/m/home.jpg"><img class="bg" src="img/d/home.jpg" alt="Officina con un'auto sul ponte e un meccanico al lavoro" style="object-position: 62% 50%" fetchpriority="high"></picture>
       <div class="scrim"></div>
       <div class="content gutter">
         <div class="head">
@@ -441,7 +445,7 @@ button { font-family: var(--font); }
         <button type="button" class="hot" data-hot="porta" data-go="vendita"><span class="pulse"></span><span class="lbl">Chiavi in mano<small>Vendita auto</small></span></button>
       </div>
       <div class="stage-fallback" id="stage-fallback" hidden>
-        <img src="img/officina.jpg" alt="">
+        <img src="img/m/officina.jpg" alt="" loading="lazy">
         <div class="fall-list">
           <button type="button" class="btn light sm" data-go="revisioni">Revisioni</button>
           <button type="button" class="btn light sm" data-go="officina">Officina</button>
@@ -463,12 +467,12 @@ button { font-family: var(--font); }
           <p>Dalla revisione alla prossima auto. Tocca un servizio per sapere tutto.</p>
         </div>
         <div class="tiles reveal">
-          <button type="button" class="tile" data-go="revisioni"><img src="img/revisioni.jpg" alt="" style="view-transition-name: vt-revisioni"><span class="tt"><b>Revisioni</b><span>Auto, moto, ciclomotori e autocarri fino a 3,5 t</span></span></button>
-          <button type="button" class="tile" data-go="officina"><img src="img/officina.jpg" alt="" style="view-transition-name: vt-officina"><span class="tt"><b>Officina</b><span>Tagliandi, freni, frizione, diagnosi</span></span></button>
-          <button type="button" class="tile" data-go="gommista"><img src="img/gommista.jpg" alt="" style="view-transition-name: vt-gommista"><span class="tt"><b>Gommista</b><span>Vendita, cambio, equilibratura, convergenza</span></span></button>
-          <button type="button" class="tile" data-go="soccorso"><img src="img/soccorso.jpg" alt="" style="view-transition-name: vt-soccorso"><span class="tt"><b>Soccorso stradale</b><span>Carro attrezzi negli orari dell'officina</span></span></button>
-          <button type="button" class="tile" data-go="preparazioni"><img src="img/preparazioni.jpg" alt="" style="view-transition-name: vt-preparazioni"><span class="tt"><b>Preparazioni</b><span>Rimappatura Stage 1, 2 e 3</span></span></button>
-          <button type="button" class="tile" data-go="vendita"><img src="img/vendita.jpg" alt="" style="view-transition-name: vt-vendita"><span class="tt"><b>Vendita auto</b><span>Usato controllato nella nostra officina</span></span></button>
+          <button type="button" class="tile" data-go="revisioni"><picture><source media="(max-width: 900px)" srcset="img/m/revisioni.jpg"><img src="img/d/revisioni.jpg" alt="" style="view-transition-name: vt-revisioni" loading="lazy"></picture><span class="tt"><b>Revisioni</b><span>Auto, moto, ciclomotori e autocarri fino a 3,5 t</span></span></button>
+          <button type="button" class="tile" data-go="officina"><picture><source media="(max-width: 900px)" srcset="img/m/officina.jpg"><img src="img/d/officina.jpg" alt="" style="view-transition-name: vt-officina" loading="lazy"></picture><span class="tt"><b>Officina</b><span>Tagliandi, freni, frizione, diagnosi</span></span></button>
+          <button type="button" class="tile" data-go="gommista"><picture><source media="(max-width: 900px)" srcset="img/m/gommista.jpg"><img src="img/d/gommista.jpg" alt="" style="view-transition-name: vt-gommista" loading="lazy"></picture><span class="tt"><b>Gommista</b><span>Vendita, cambio, equilibratura, convergenza</span></span></button>
+          <button type="button" class="tile" data-go="soccorso"><picture><source media="(max-width: 900px)" srcset="img/m/soccorso.jpg"><img src="img/d/soccorso.jpg" alt="" style="view-transition-name: vt-soccorso" loading="lazy"></picture><span class="tt"><b>Soccorso stradale</b><span>Carro attrezzi negli orari dell'officina</span></span></button>
+          <button type="button" class="tile" data-go="preparazioni"><picture><source media="(max-width: 900px)" srcset="img/m/preparazioni.jpg"><img src="img/d/preparazioni.jpg" alt="" style="view-transition-name: vt-preparazioni" loading="lazy"></picture><span class="tt"><b>Preparazioni</b><span>Rimappatura Stage 1, 2 e 3</span></span></button>
+          <button type="button" class="tile" data-go="vendita"><picture><source media="(max-width: 900px)" srcset="img/m/vendita.jpg"><img src="img/d/vendita.jpg" alt="" style="view-transition-name: vt-vendita" loading="lazy"></picture><span class="tt"><b>Vendita auto</b><span>Usato controllato nella nostra officina</span></span></button>
         </div>
       </div>
     </section>
@@ -497,7 +501,7 @@ button { font-family: var(--font); }
   <section data-view="revisioni" hidden aria-label="Revisioni">
     <div class="block">
       <div class="panel" data-tone="dark">
-        <img class="bg" src="img/revisioni.jpg" alt="" style="object-position: 38% 50%; view-transition-name: vt-revisioni">
+        <picture><source media="(max-width: 900px)" srcset="img/m/revisioni.jpg"><img class="bg" src="img/d/revisioni.jpg" alt="" style="object-position: 38% 50%; view-transition-name: vt-revisioni" loading="lazy"></picture>
         <div class="scrim"></div><div class="dim"></div>
         <div class="content gutter">
           <div class="head"><span class="eyebrow">Centro revisioni</span><h2 tabindex="-1">Revisioni</h2><p>Auto, moto, ciclomotori, tricicli, quadricicli e autocarri fino a 3,5 t. Tariffa di legge, esito subito.</p></div>
@@ -569,7 +573,7 @@ button { font-family: var(--font); }
   <section data-view="officina" hidden aria-label="Officina">
     <div class="block">
       <div class="panel" data-tone="light">
-        <img class="bg" src="img/officina.jpg" alt="" style="object-position: 55% 55%; view-transition-name: vt-officina">
+        <picture><source media="(max-width: 900px)" srcset="img/m/officina.jpg"><img class="bg" src="img/d/officina.jpg" alt="" style="object-position: 55% 55%; view-transition-name: vt-officina" loading="lazy"></picture>
         <div class="scrim"></div><div class="dim"></div>
         <div class="content gutter">
           <div class="head"><span class="eyebrow">Meccanica</span><h2 tabindex="-1">Officina</h2><p>Tagliandi, freni, frizione, distribuzione e diagnosi. Prima ti diciamo cosa ha l'auto e quanto costa.</p></div>
@@ -623,7 +627,7 @@ button { font-family: var(--font); }
   <section data-view="gommista" hidden aria-label="Gommista">
     <div class="block">
       <div class="panel" data-tone="dark">
-        <img class="bg" src="img/gommista.jpg" alt="" style="object-position: 72% 50%; view-transition-name: vt-gommista">
+        <picture><source media="(max-width: 900px)" srcset="img/m/gommista.jpg"><img class="bg" src="img/d/gommista.jpg" alt="" style="object-position: 72% 50%; view-transition-name: vt-gommista" loading="lazy"></picture>
         <div class="scrim"></div><div class="dim"></div>
         <div class="content gutter">
           <div class="head"><span class="eyebrow">Pneumatici</span><h2 tabindex="-1">Gommista</h2><p>Vendita, cambio gomme, equilibratura e convergenza. Mandaci la misura, ti diamo il prezzo.</p></div>
@@ -641,7 +645,7 @@ button { font-family: var(--font); }
           </div>
           <div class="sub reveal">
             <div class="split">
-              <div class="split-img"><img src="img/gomma.jpg" alt="Primo piano del battistrada di una gomma" loading="lazy"></div>
+              <div class="split-img"><img src="img/s/gomma.jpg" alt="Primo piano del battistrada di una gomma" loading="lazy"></div>
               <div class="split-text">
                 <h4>Leggi la tua misura</h4>
                 <p>È scritta sul fianco della gomma. Tocca ogni parte della sigla.</p>
@@ -684,7 +688,7 @@ button { font-family: var(--font); }
   <section data-view="soccorso" hidden aria-label="Soccorso stradale">
     <div class="block">
       <div class="panel" data-tone="light">
-        <img class="bg" src="img/soccorso.jpg" alt="" style="object-position: 50% 55%; view-transition-name: vt-soccorso">
+        <picture><source media="(max-width: 900px)" srcset="img/m/soccorso.jpg"><img class="bg" src="img/d/soccorso.jpg" alt="" style="object-position: 50% 55%; view-transition-name: vt-soccorso" loading="lazy"></picture>
         <div class="scrim"></div><div class="dim"></div>
         <div class="content gutter">
           <div class="head"><span class="eyebrow">Carro attrezzi</span><h2 tabindex="-1">Soccorso stradale</h2><p>Auto in panne? Ti veniamo a prendere e la portiamo in officina, dove la ripariamo.</p></div>
@@ -736,7 +740,7 @@ button { font-family: var(--font); }
   <section data-view="preparazioni" hidden aria-label="Preparazioni">
     <div class="block">
       <div class="panel" data-tone="dark">
-        <img class="bg" src="img/preparazioni.jpg" alt="" style="object-position: 50% 55%; view-transition-name: vt-preparazioni">
+        <picture><source media="(max-width: 900px)" srcset="img/m/preparazioni.jpg"><img class="bg" src="img/d/preparazioni.jpg" alt="" style="object-position: 50% 55%; view-transition-name: vt-preparazioni" loading="lazy"></picture>
         <div class="scrim"></div><div class="dim"></div>
         <div class="content gutter">
           <div class="head"><span class="eyebrow">Rimappature</span><h2 tabindex="-1">Preparazioni</h2><p>Stage 1, 2 e 3. Prima controlliamo il motore, alla consegna i dati misurati prima e dopo.</p></div>
@@ -780,7 +784,7 @@ button { font-family: var(--font); }
   <section data-view="vendita" hidden aria-label="Vendita auto">
     <div class="block">
       <div class="panel" data-tone="light">
-        <img class="bg" src="img/vendita.jpg" alt="" style="object-position: 60% 50%; view-transition-name: vt-vendita">
+        <picture><source media="(max-width: 900px)" srcset="img/m/vendita.jpg"><img class="bg" src="img/d/vendita.jpg" alt="" style="object-position: 60% 50%; view-transition-name: vt-vendita" loading="lazy"></picture>
         <div class="scrim"></div><div class="dim"></div>
         <div class="content gutter">
           <div class="head"><span class="eyebrow">Usato</span><h2 tabindex="-1">Vendita auto</h2><p>Auto usate controllate e sistemate nella nostra officina, prima di venderle. Sai cosa compri.</p></div>
@@ -792,7 +796,7 @@ button { font-family: var(--font); }
           <div class="d-head reveal"><h3>Controllate da noi, pezzo per pezzo</h3><p>Le compriamo alle aste professionali e da privati. Prima di venderle passano dalla nostra officina, e su ogni scheda scriviamo cosa abbiamo fatto.</p></div>
           <div class="stock reveal">
             <div class="empty"><h5>Stiamo preparando le prossime auto.</h5><p>Dicci cosa cerchi, quanto vuoi spendere e che alimentazione preferisci: ti scriviamo quando arriva quella giusta.</p><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20cerco%20un'auto.%20Budget%3A%20%20Tipo%3A%20%20Alimentazione%3A%20%20Cambio%3A%20" target="_blank" rel="noopener">Avvisami quando arriva</a></div>
-            <article class="car" aria-label="Esempio di scheda auto"><img src="img/esempio-auto.jpg" alt="Esempio: utilitaria bianca parcheggiata" loading="lazy"><span class="badge">ESEMPIO DI SCHEDA</span><div class="body"><h5>Così vedrai ogni auto in vendita</h5><div class="meta"><span>Anno</span><span>Km</span><span>Alimentazione</span><span>Cambio</span></div><p class="done-list"><b>Cosa abbiamo fatto:</b> i lavori in officina. <b>Cosa sapere:</b> difetti e lavori futuri, scritti chiari.</p></div></article>
+            <article class="car" aria-label="Esempio di scheda auto"><img src="img/s/esempio-auto.jpg" alt="Esempio: utilitaria bianca parcheggiata" loading="lazy"><span class="badge">ESEMPIO DI SCHEDA</span><div class="body"><h5>Così vedrai ogni auto in vendita</h5><div class="meta"><span>Anno</span><span>Km</span><span>Alimentazione</span><span>Cambio</span></div><p class="done-list"><b>Cosa abbiamo fatto:</b> i lavori in officina. <b>Cosa sapere:</b> difetti e lavori futuri, scritti chiari.</p></div></article>
           </div>
           <details class="more reveal">
             <summary>Come compri, come vendi, domande</summary>
@@ -823,7 +827,7 @@ button { font-family: var(--font); }
   <section data-view="contatti" hidden aria-label="Contatti">
     <div class="block">
       <div class="panel" data-tone="light">
-        <img class="bg" src="img/dove.jpg" alt="" style="object-position: 45% 50%">
+        <picture><source media="(max-width: 900px)" srcset="img/m/dove.jpg"><img class="bg" src="img/d/dove.jpg" alt="" style="object-position: 45% 50%" loading="lazy"></picture>
         <div class="scrim"></div><div class="dim"></div>
         <div class="content gutter">
           <div class="head"><span class="eyebrow">Dove siamo</span><h2 tabindex="-1">Allo scalo di Montecalvo Irpino</h2><p>Contrada Olivara 19. A 20 minuti da Ariano Irpino, 41 da Benevento.</p></div>
@@ -938,7 +942,20 @@ button { font-family: var(--font); }
 (function () {
   var hasGsap = !!(window.gsap && window.ScrollTrigger);
   if (hasGsap) gsap.registerPlugin(ScrollTrigger, SplitText);
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // chi ha "Riduci movimento" attivo sul telefono parte senza animazioni, ma può riaccenderle per questa visita
+  var phoneReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var motionOn = false;
+  try { motionOn = sessionStorage.getItem("dan-motion") === "1"; } catch (e) {}
+  var reduce = phoneReduce && !motionOn;
+  if (motionOn) document.documentElement.classList.add("motion-on");
+  var pill = document.getElementById("motion-pill");
+  if (reduce && pill) {
+    pill.hidden = false;
+    pill.addEventListener("click", function () {
+      try { sessionStorage.setItem("dan-motion", "1"); sessionStorage.removeItem("dan-ignition"); } catch (e) {}
+      location.reload();
+    });
+  }
   var stage3d = window.__stage = window.__stage || { target: 0, active: false, reduce: reduce };
 
   // ---------- orari: officina e soccorso seguono gli stessi ----------
@@ -1178,11 +1195,20 @@ button { font-family: var(--font); }
     var h = views[name].querySelector("h1, h2"); if (h) h.focus({ preventScroll: true });
   }
 
+  // la foto della pagina d'arrivo si carica solo quando serve; prima del passaggio aspettiamo che sia pronta (al massimo 0,7 s)
+  function readyHero(name) {
+    var img = views[name] && views[name].querySelector(".panel img.bg");
+    if (!img) return Promise.resolve();
+    img.loading = "eager";
+    var ready = img.decode ? img.decode().catch(function () {}) : Promise.resolve();
+    return Promise.race([ready, new Promise(function (r) { setTimeout(r, 700); })]);
+  }
+
   function go(name) {
     if (!views[name] || name === current) { if (name === current) window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); return; }
     hideDrawer();
     if (document.startViewTransition && !reduce) {
-      document.startViewTransition(function () { swap(name); });
+      readyHero(name).then(function () { document.startViewTransition(function () { swap(name); }); });
     } else if (hasGsap && !reduce) {
       gsap.to("#views", { opacity: 0, duration: 0.2, onComplete: function () { swap(name); gsap.to("#views", { opacity: 1, duration: 0.35 }); } });
     } else {
@@ -1267,7 +1293,11 @@ button { font-family: var(--font); }
     stage3d.active = true;
     ignite(false);
   }
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start, start); else window.addEventListener("load", start);
+  // si parte quando il font è pronto, ma mai oltre 1,2 secondi: con la rete lenta non si aspetta
+  var started = false;
+  function startOnce() { if (!started) { started = true; start(); } }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(startOnce, startOnce);
+  setTimeout(startOnce, 1200);
 })();
 </script>
 
@@ -1318,10 +1348,30 @@ async function boot() {
   // modello: prima Draco con WebAssembly, poi Draco in JavaScript, poi la copia senza compressione
   // i modelli sono pubblicati come testo base64 (.txt), perché la pagina non serve file .glb
   const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("tempo scaduto")), ms))]);
-  const fetchGlb = async (path) => {
+  const pctEl = loadEl.querySelector("span");
+  const fetchGlb = async (path, expected) => {
     const res = await fetch(path);
     if (!res.ok) throw new Error(path + " " + res.status);
-    const bin = atob((await res.text()).replace(/\s+/g, ""));
+    let text;
+    if (res.body && res.body.getReader && expected) {
+      // leggo a pezzi per mostrare la percentuale mentre arriva
+      const reader = res.body.getReader();
+      const parts = [];
+      let got = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        parts.push(value); got += value.length;
+        pctEl.textContent = "Accendo la scena 3D · " + Math.min(99, Math.round((got / expected) * 100)) + "%";
+      }
+      const all = new Uint8Array(got);
+      let off = 0;
+      for (const part of parts) { all.set(part, off); off += part.length; }
+      text = new TextDecoder().decode(all);
+    } else {
+      text = await res.text();
+    }
+    const bin = atob(text.replace(/\s+/g, ""));
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
     return bytes.buffer;
@@ -1329,7 +1379,7 @@ async function boot() {
   const parse = (loader, buf) => new Promise((resolve, reject) => loader.parse(buf, "", resolve, reject));
   let dracoBuf = null;
   const loadDraco = async (type) => {
-    if (!dracoBuf) dracoBuf = await fetchGlb("3d/ferrari.glb.txt");
+    if (!dracoBuf) dracoBuf = await fetchGlb("3d/ferrari.glb.txt", 2242097);
     const draco = new DRACOLoader();
     draco.setDecoderPath("3d/draco/");
     draco.setDecoderConfig({ type });
@@ -1337,7 +1387,7 @@ async function boot() {
     loader.setDRACOLoader(draco);
     try { return await parse(loader, dracoBuf.slice(0)); } finally { draco.dispose(); }
   };
-  const loadPlain = async () => parse(new GLTFLoader(), await fetchGlb("3d/ferrari-riserva.glb.txt"));
+  const loadPlain = async () => parse(new GLTFLoader(), await fetchGlb("3d/ferrari-riserva.glb.txt", 8531809));
   let gltf = null;
   for (const attempt of [() => loadDraco("wasm"), () => loadDraco("js"), loadPlain]) {
     try { gltf = await withTimeout(attempt(), 25000); break; } catch (e) { console.warn("3D: tentativo fallito", e); }
@@ -1519,10 +1569,17 @@ async function boot() {
   frame();
 }
 
-// carica la scena solo quando serve: quando la home è vicina alla scena
+// prima le foto, poi la scena 3D: parte quando la pagina ha finito di caricare e la scena è vicina
 let booted = false;
+const pageLoaded = new Promise((resolve) => {
+  if (document.readyState === "complete") resolve();
+  else window.addEventListener("load", resolve, { once: true });
+});
 const io = new IntersectionObserver((entries) => {
-  if (!booted && entries.some((e) => e.isIntersecting)) { booted = true; io.disconnect(); boot().catch(showFallback); }
-}, { rootMargin: "150% 0px" });
+  if (!booted && entries.some((e) => e.isIntersecting)) {
+    booted = true; io.disconnect();
+    pageLoaded.then(() => setTimeout(() => boot().catch(showFallback), 200));
+  }
+}, { rootMargin: "120% 0px" });
 io.observe(stageEl);
 </script>
