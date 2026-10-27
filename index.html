@@ -55,7 +55,7 @@ button { font-family: var(--font); }
 ::view-transition-group(*) { animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); }
 .top { view-transition-name: topbar; }
 @media (prefers-reduced-motion: reduce) { :root:not(.motion-on)::view-transition-group(*), :root:not(.motion-on)::view-transition-old(*), :root:not(.motion-on)::view-transition-new(*) { animation: none !important; } }
-.motion-pill { position: fixed; z-index: 80; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); max-width: calc(100% - 32px); background: var(--onyx); color: var(--white); border: 0; border-radius: 999px; padding: 10px 18px; font: 500 13px var(--font); cursor: pointer; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); }
+.motion-pill { position: fixed; z-index: 80; left: 50%; transform: translateX(-50%); top: calc(64px + env(safe-area-inset-top, 0px)); max-width: calc(100% - 32px); background: var(--onyx); color: var(--white); border: 0; border-radius: 999px; padding: 10px 18px; font: 500 13px var(--font); cursor: pointer; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); }
 .motion-pill b { color: #8fb0ff; font-weight: 600; }
 
 /* ---------- accensione ---------- */
