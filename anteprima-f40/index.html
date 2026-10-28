@@ -36,7 +36,7 @@ h2, p { margin: 0; }
 /* la scena */
 .show { position: relative; height: 100vh; height: 100svh; overflow: clip; background: var(--bg); }
 .stage { position: absolute; inset: 0; }
-.word { position: absolute; left: 50%; top: 56%; translate: -50% -50%; font-weight: 800; font-size: clamp(200px, 38vw, 620px); line-height: 0.8; letter-spacing: -0.04em; color: transparent; -webkit-text-stroke: 1.5px rgba(242, 243, 245, 0.16); white-space: nowrap; pointer-events: none; user-select: none; }
+.word { position: absolute; left: 50%; top: 56%; translate: -50% -50%; font-weight: 800; font-size: clamp(200px, 38vw, 620px); line-height: 0.8; letter-spacing: -0.04em; color: transparent; -webkit-text-stroke: 1.5px rgba(242, 243, 245, 0.12); white-space: nowrap; pointer-events: none; user-select: none; }
 /* le foto hanno il fondo nero: in "screen" il nero sparisce e la scritta resta dietro l'auto */
 .shots { position: absolute; inset: 0; mix-blend-mode: screen; }
 .shot { position: absolute; margin: 0; will-change: transform, opacity; }
@@ -216,6 +216,9 @@ h2, p { margin: 0; }
   tl.to({}, { duration: 0.4 }, (n - 1) * STEP);
   // la scritta F40 scorre dietro l'auto e se ne va quando iniziano i dettagli
   var firstDetail = shots.findIndex(function (el) { return el.classList.contains("detail"); });
+  // al buio non c'è: compare insieme alle luci dello studio
+  gsap.set(".word", { autoAlpha: 0 });
+  tl.to(".word", { autoAlpha: 1, duration: MOVE, ease: "power1.out" }, STEP - MOVE);
   tl.fromTo(".word", { xPercent: 14 }, { xPercent: -14, ease: "none", duration: (firstDetail - 1) * STEP }, 0);
   tl.to([".word", ".spec"], { autoAlpha: 0, duration: 0.5, ease: "power1.out" }, firstDetail * STEP - MOVE);
   tl.to(".hint", { autoAlpha: 0, duration: 0.3 }, STEP - MOVE);
