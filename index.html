@@ -325,6 +325,92 @@ button { font-family: var(--font); }
 .car .done-list { font-size: 14px; color: var(--charcoal); line-height: 1.6; }
 .car .done-list b { color: var(--onyx); font-weight: 600; }
 
+/* preparazioni: curva per stage */
+.seg.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.tune { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; }
+@media (max-width: 900px) { .tune { grid-template-columns: minmax(0, 1fr); } }
+.tune-chart { background: #0b0d10; color: var(--white); border-radius: 8px; padding: 24px 20px 20px; display: grid; grid-template-rows: auto 1fr auto; gap: 14px; min-width: 0; }
+.tune-chart svg { align-self: center; }
+.tune-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; }
+.tune-top .k { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
+.tune-top .k + .k { color: rgba(255, 255, 255, 0.8); letter-spacing: 0.06em; }
+.tune-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.tune-chart .axes line { stroke: rgba(255, 255, 255, 0.08); stroke-width: 1; }
+.tune-chart .axes line.base { stroke: rgba(255, 255, 255, 0.25); }
+.tune-chart .ax { fill: rgba(255, 255, 255, 0.45); font: 500 12px var(--font); font-variant-numeric: tabular-nums; }
+.tune-chart .ax.u { fill: rgba(255, 255, 255, 0.7); font-weight: 600; }
+@media (max-width: 600px) { .tune-chart { padding: 20px 12px 16px; } .tune-chart .ax { font-size: 21px; } }
+.tune-chart path { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.tune-chart .c-bp { stroke: rgba(255, 255, 255, 0.55); stroke-width: 2.5; }
+.tune-chart .c-bt { stroke: rgba(255, 255, 255, 0.3); stroke-width: 1.5; }
+.tune-chart .c-tp { stroke: #6f93ff; stroke-width: 3; }
+.tune-chart .c-tt { stroke: #6f93ff; stroke-width: 1.75; opacity: 0.75; }
+.tune-chart path.c-fill { fill: url(#tune-grad); stroke: none; }
+.tune-chart .cursor { stroke: #8fb0ff; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: rgba(255, 255, 255, 0.6); }
+.legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.legend .lg-base { background: rgba(255, 255, 255, 0.55); }
+.legend .lg-tune { background: #6f93ff; }
+.legend .lg-thin { height: 1.5px; background: rgba(255, 255, 255, 0.45); }
+.tune-side { gap: 20px; }
+.ro-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ro { background: var(--white); border-radius: 8px; padding: 16px; display: grid; gap: 2px; min-width: 0; }
+.ro .k { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel); }
+.ro .big { font-size: clamp(30px, 3vw, 40px); line-height: 1.15; font-weight: 500; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ro .big b { font-weight: 500; }
+.ro .big small { font-size: 15px; color: var(--steel); }
+.ro .delta { font-size: 13px; font-weight: 600; color: var(--blue); font-variant-numeric: tabular-nums; }
+.stage-txt { display: grid; gap: 10px; }
+.stage-txt h5 { font-size: 20px; line-height: 1.4; font-weight: 500; }
+.stage-txt p { font-size: 15px; line-height: 1.6; color: var(--charcoal); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips span { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--white); color: var(--charcoal); white-space: nowrap; }
+.fine-note { font-size: 12px; line-height: 1.5; color: var(--steel); }
+
+/* preparazioni: attrezzatura */
+.tools-band { position: relative; z-index: 1; background: var(--onyx); color: var(--white); padding-block: 112px; }
+.tools-band .eyebrow { color: rgba(255, 255, 255, 0.6); }
+.tools-band .d-head p { color: rgba(255, 255, 255, 0.72); }
+.tool-rows { margin-top: 64px; border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.tool-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 10px 32px; padding-block: 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); align-items: baseline; }
+.tool-row .k { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
+.names { display: flex; flex-wrap: wrap; column-gap: 0.32em; font-size: clamp(34px, 5.6vw, 80px); }
+.names button { all: unset; cursor: pointer; font-size: 1em; line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: var(--white); white-space: nowrap; transition: color 0.25s ease; }
+.names button:hover, .names button[aria-pressed="true"] { color: #8fb0ff; }
+.names button:focus-visible { outline: 2px solid #8fb0ff; outline-offset: 4px; border-radius: 4px; }
+.tool-desc { grid-column: 2; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.72); max-width: 62ch; }
+.tool-desc b { color: var(--white); font-weight: 600; }
+.tools-band .tbc { text-decoration-color: rgba(255, 255, 255, 0.5); }
+.tools-band .tbc::after { color: rgba(255, 255, 255, 0.6); }
+.tm { margin-top: 24px; font-size: 12px; color: rgba(255, 255, 255, 0.4); }
+@media (max-width: 760px) { .tools-band { padding-block: 88px; } .tool-row { grid-template-columns: minmax(0, 1fr); padding-block: 22px; } .tool-desc { grid-column: 1; } }
+
+/* preparazioni: il metodo, scorre di lato mentre scendi */
+.method { position: relative; z-index: 1; background: var(--onyx); color: var(--white); min-height: 100vh; min-height: 100svh; display: grid; align-content: center; gap: 40px; padding-block: calc(56px + env(safe-area-inset-top, 0px) + 4vh) 6vh; overflow: hidden; overflow: clip; border-top: 1px solid rgba(255, 255, 255, 0.08); grid-template-columns: minmax(0, 1fr); }
+.method-head { text-align: center; display: grid; gap: 12px; justify-items: center; }
+.method-head .eyebrow { color: rgba(255, 255, 255, 0.6); }
+.method-head h3 { font-size: clamp(30px, 3vw, 40px); line-height: 1.2; font-weight: 500; letter-spacing: -0.01em; }
+.method-track { position: relative; display: flex; gap: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 900px) { .method-track { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); } }
+html.static .method-track { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+html.static .method-track::-webkit-scrollbar { display: none; }
+.mstep { flex: 0 0 min(400px, 80vw); scroll-snap-align: center; background: #20242c; border-radius: 8px; padding: 28px; display: grid; gap: 12px; align-content: start; min-height: 300px; }
+.mstep .n { font-size: 56px; line-height: 1; font-weight: 600; letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.16); font-variant-numeric: tabular-nums; }
+.mstep h4 { font-size: 24px; line-height: 1.3; font-weight: 500; margin-top: 12px; }
+.mstep p { font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.72); }
+.mstep .chips { margin-top: 6px; }
+.mstep .chips span { background: rgba(255, 255, 255, 0.1); color: var(--white); }
+.method-bar { width: min(220px, 50vw); height: 2px; margin: 0 auto; background: rgba(255, 255, 255, 0.15); }
+.method-bar i { display: block; height: 100%; background: var(--white); transform-origin: left center; transform: scaleX(0); }
+html.static .method-bar { display: none; }
+
+/* preparazioni: richiesta */
+.sub > .due { margin-top: 0; }
+.due-form .fields input[type="text"] { background: var(--white); }
+.ans { display: grid; gap: 10px; margin-block: 6px 4px; }
+.ans li { display: flex; gap: 10px; align-items: baseline; font-size: 17px; line-height: 1.4; }
+.ans li::before { content: ""; flex: none; width: 10px; height: 6px; border-left: 2px solid #8fb0ff; border-bottom: 2px solid #8fb0ff; transform: translateY(-3px) rotate(-45deg); }
+
 /* contatti */
 .hours { width: 100%; border-collapse: collapse; font-size: 16px; font-variant-numeric: tabular-nums; }
 .hours td { padding: 14px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
@@ -471,7 +557,7 @@ button { font-family: var(--font); }
           <button type="button" class="tile" data-go="officina"><picture><source media="(max-width: 900px)" srcset="img/m/officina.jpg"><img src="img/d/officina.jpg" alt="" style="view-transition-name: vt-officina" loading="lazy"></picture><span class="tt"><b>Officina</b><span>Tagliandi, freni, frizione, diagnosi</span></span></button>
           <button type="button" class="tile" data-go="gommista"><picture><source media="(max-width: 900px)" srcset="img/m/gommista.jpg"><img src="img/d/gommista.jpg" alt="" style="view-transition-name: vt-gommista" loading="lazy"></picture><span class="tt"><b>Gommista</b><span>Vendita, cambio, equilibratura, convergenza</span></span></button>
           <button type="button" class="tile" data-go="soccorso"><picture><source media="(max-width: 900px)" srcset="img/m/soccorso.jpg"><img src="img/d/soccorso.jpg" alt="" style="view-transition-name: vt-soccorso" loading="lazy"></picture><span class="tt"><b>Soccorso stradale</b><span>Carro attrezzi negli orari dell'officina</span></span></button>
-          <button type="button" class="tile" data-go="preparazioni"><picture><source media="(max-width: 900px)" srcset="img/m/preparazioni.jpg"><img src="img/d/preparazioni.jpg" alt="" style="view-transition-name: vt-preparazioni" loading="lazy"></picture><span class="tt"><b>Preparazioni</b><span>Rimappatura Stage 1, 2 e 3</span></span></button>
+          <button type="button" class="tile" data-go="preparazioni"><picture><source media="(max-width: 900px)" srcset="img/m/preparazioni.jpg"><img src="img/d/preparazioni.jpg" alt="" style="view-transition-name: vt-preparazioni" loading="lazy"></picture><span class="tt"><b>Preparazioni</b><span>Stage 1, 2, 3 e cambio automatico</span></span></button>
           <button type="button" class="tile" data-go="vendita"><picture><source media="(max-width: 900px)" srcset="img/m/vendita.jpg"><img src="img/d/vendita.jpg" alt="" style="view-transition-name: vt-vendita" loading="lazy"></picture><span class="tt"><b>Vendita auto</b><span>Usato controllato nella nostra officina</span></span></button>
         </div>
       </div>
@@ -743,39 +829,147 @@ button { font-family: var(--font); }
         <picture><source media="(max-width: 900px)" srcset="img/m/preparazioni.jpg"><img class="bg" src="img/d/preparazioni.jpg" alt="" style="object-position: 50% 55%; view-transition-name: vt-preparazioni" loading="lazy"></picture>
         <div class="scrim"></div><div class="dim"></div>
         <div class="content gutter">
-          <div class="head"><span class="eyebrow">Rimappature</span><h2 tabindex="-1">Preparazioni</h2><p>Stage 1, 2 e 3. Prima controlliamo il motore, alla consegna i dati misurati prima e dopo.</p></div>
+          <div class="head"><span class="eyebrow">Rimappature e centraline</span><h2 tabindex="-1">Preparazioni</h2><p>Stage 1, 2 e 3, cambio automatico e codifiche. Con gli strumenti dei preparatori.</p></div>
           <div class="foot"><div class="ctas"><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20un%20preventivo%20per%20una%20preparazione.%20Auto%20e%20motore%3A%20%20Km%3A%20%20Cosa%20vorrei%20ottenere%3A%20" target="_blank" rel="noopener">Chiedi un preventivo</a><a class="btn light" href="tel:+393505655754">Chiama</a></div></div>
         </div>
       </div>
       <div class="sheet gutter" data-sheet>
         <div class="wrap">
-          <div class="d-head reveal"><h3>Più spinta, su un motore sano</h3><p>La rimappatura riscrive il programma della centralina. Prima controlliamo il motore: una preparazione su un motore stanco fa solo danni.</p></div>
-          <div class="sub reveal">
-            <div class="cards">
-              <div class="card"><span class="k">Stage 1</span><h5>Solo software</h5><p>Mappa nuova sulla meccanica di serie. Si torna all'originale quando vuoi.</p></div>
-              <div class="card"><span class="k">Stage 2</span><h5>Software e componenti</h5><p>Più scarico e aspirazione, e se serve l'intercooler. Un salto netto.</p></div>
-              <div class="card"><span class="k">Stage 3</span><h5>Su progetto</h5><p>Turbina e componenti maggiorati, frizione adeguata. Auto per auto.</p></div>
-            </div>
+          <div class="d-head reveal"><h3>Più spinta, su un motore sano</h3><p>Leggiamo la centralina, salviamo l'originale e scriviamo una mappa per il tuo motore. Prima lo controlliamo: una preparazione su un motore stanco fa solo danni.</p></div>
+          <div class="specs reveal">
+            <div class="spec"><span class="v">3 sistemi</span><span class="l">per leggere le centraline</span></div>
+            <div class="spec"><span class="v">OBD · banco · boot</span><span class="l">anche a centralina smontata</span></div>
+            <div class="spec"><span class="v">Motore e cambio</span><span class="l">centraline ECU e TCU</span></div>
+            <div class="spec"><span class="v">File originale</span><span class="l">salvato: si torna indietro</span></div>
           </div>
-          <details class="more reveal">
-            <summary>Come lavoriamo e domande</summary>
-            <div class="more-body">
-              <ul class="rows">
-                <li><b>Diagnosi</b><span>Controlliamo il motore e leggiamo la centralina.</span></li>
-                <li><b>Copia</b><span>Salviamo il programma originale: si torna indietro quando vuoi.</span></li>
-                <li><b>Mappa</b><span>Scritta per il tuo motore e per come guidi.</span></li>
-                <li><b>Prova</b><span>Verifica <span class="tbc">su strada e con gli strumenti</span>.</span></li>
-                <li><b>Consegna</b><span>Con i dati misurati prima e dopo. Niente promesse a occhio.</span></li>
-              </ul>
-              <div class="faq">
-                <details><summary>Quanti cavalli in più?</summary><p>Dipende dal motore: te lo diciamo dopo la diagnosi, con i valori misurati.</p></details>
-                <details><summary>Cosa cambia per assicurazione e revisione?</summary><p>Prima di ogni lavoro ti spieghiamo cosa comporta. Per le auto da pista facciamo preparazioni per uso non stradale.</p></details>
-                <details><summary>Che garanzia date?</summary><p><span class="tbc">Da definire con l'officina.</span></p></details>
+          <div class="sub reveal">
+            <h4>Cosa cambia, stage per stage</h4>
+            <div class="tune" id="tune">
+              <div class="tune-chart">
+                <div class="tune-top"><span class="k">Potenza e coppia</span><span class="k" id="tune-name">Turbodiesel 2.0 da 150 CV</span></div>
+                <svg id="tune-svg" viewBox="0 0 640 344" role="img" aria-label="Grafico di potenza e coppia, di serie e dopo la preparazione"></svg>
+                <div class="legend" aria-hidden="true"><span><i class="lg-base"></i>Di serie</span><span><i class="lg-tune"></i><span id="tune-lg">Stage 1</span></span><span><i class="lg-thin"></i>Linea sottile: coppia</span></div>
+              </div>
+              <div class="due-form tune-side" id="tune-side">
+                <div class="lab"><span>Motore</span><div class="seg" role="radiogroup" aria-label="Motore"><label><input type="radio" name="tu-f" value="diesel" checked>Turbodiesel</label><label><input type="radio" name="tu-f" value="benzina">Turbobenzina</label></div></div>
+                <div class="lab"><span>Preparazione</span><div class="seg three" role="radiogroup" aria-label="Stage"><label><input type="radio" name="tu-s" value="1" checked>Stage 1</label><label><input type="radio" name="tu-s" value="2">Stage 2</label><label><input type="radio" name="tu-s" value="3">Stage 3</label></div></div>
+                <div class="ro-row" aria-live="polite">
+                  <div class="ro"><span class="k">Potenza</span><span class="big"><b id="ro-cv">185</b> <small>CV</small></span><span class="delta" id="ro-cv-d">+35 CV · +23%</span></div>
+                  <div class="ro"><span class="k">Coppia</span><span class="big"><b id="ro-nm">400</b> <small>Nm</small></span><span class="delta" id="ro-nm-d">+60 Nm · +18%</span></div>
+                </div>
+                <div class="stage-txt" id="stage-txt"></div>
+                <p class="fine-note">Esempio indicativo. Il guadagno della tua auto lo vedi nei dati registrati prima e dopo.</p>
               </div>
             </div>
-          </details>
-          <div class="cta-row reveal"><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20un%20preventivo%20per%20una%20preparazione.%20Auto%20e%20motore%3A%20%20Km%3A%20%20Cosa%20vorrei%20ottenere%3A%20" target="_blank" rel="noopener">Chiedi un preventivo</a><a class="btn ghost" href="tel:+393505655754">Chiama 350 565 5754</a></div>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <section class="tools-band gutter" data-band data-tone="dark" aria-label="Attrezzatura">
+      <div class="wrap">
+        <div class="d-head reveal"><span class="eyebrow">Attrezzatura</span><h3>Gli strumenti dei preparatori</h3><p>Gli stessi sistemi delle grandi officine di tuning. Tocca un nome per sapere a cosa serve.</p></div>
+        <div class="tool-rows" id="tool-rows">
+          <div class="tool-row">
+            <span class="k">Centraline motore e cambio</span>
+            <div class="names"><button type="button" aria-pressed="false" data-d="Italiana. Legge e scrive la centralina del motore e del cambio dalla presa OBD, al banco o in boot.">Alientech</button><button type="button" aria-pressed="false" data-d="Programmazione delle centraline motore e cambio in OBD, al banco e in boot.">Magic Motorsport</button><button type="button" aria-pressed="false" data-d="Il sistema svizzero Flashtec: legge e scrive la centralina in OBD e al banco.">CMD</button></div>
+            <p class="tool-desc">Leggono e scrivono la centralina. Con tre sistemi diversi arriviamo su più auto.</p>
+          </div>
+          <div class="tool-row">
+            <span class="k">Diagnosi</span>
+            <div class="names"><button type="button" aria-pressed="false" data-d="Italiana. Diagnosi multimarca: errori, parametri in tempo reale, tarature e reset dei service.">Texa</button><button type="button" aria-pressed="false" data-d="Diagnosi avanzata e codifica dei moduli, anche sulle auto più recenti.">Autel</button><button type="button" aria-pressed="false" data-d="Diagnosi multimarca su auto e furgoni, con la prova dei singoli componenti.">Launch</button><button type="button" aria-pressed="false" data-d="Italiana, del gruppo Mahle. Diagnosi e &lt;span class=&quot;tbc&quot;&gt;analisi dei gas di scarico&lt;/span&gt;.">Brainbee</button></div>
+            <p class="tool-desc">Prima di toccare la mappa sappiamo come sta il motore.</p>
+          </div>
+          <div class="tool-row">
+            <span class="k">Chiavi e codifiche</span>
+            <div class="names"><button type="button" aria-pressed="false" data-d="Chiavi, codifiche e adattamento dei moduli su molte marche europee.">Abrites</button><button type="button" aria-pressed="false" data-d="Programmazione di chiavi e immobilizer, diagnosi e funzioni di service.">Xtool</button></div>
+            <p class="tool-desc">Chiavi, moduli nuovi e funzioni da attivare.</p>
+          </div>
+          <div class="tool-row">
+            <span class="k">Perdite d'aria</span>
+            <div class="names"><button type="button" aria-pressed="false" data-d="Macchina del fumo: lo spinge nell'aspirazione e nel circuito del turbo. Dove c'è una perdita, il fumo esce e si vede.">Smoke</button></div>
+            <p class="tool-desc">Una perdita nel circuito del turbo toglie spinta: la troviamo prima.</p>
+          </div>
+        </div>
+        <p class="tm">I nomi citati sono marchi dei rispettivi proprietari.</p>
+      </div>
+    </section>
+
+    <section class="method" id="method" data-band data-tone="dark" aria-label="Il metodo">
+      <div class="method-head gutter"><span class="eyebrow">Il metodo</span><h3>Sei passaggi, ogni volta</h3></div>
+      <div class="method-track" id="method-track">
+        <article class="mstep"><span class="n">01</span><h4>Diagnosi</h4><p>Errori in centralina, parametri in tempo reale, turbo e frizione. Se il motore ha un problema, prima si ripara.</p><div class="chips"><span>Texa</span><span>Autel</span><span>Launch</span></div></article>
+        <article class="mstep"><span class="n">02</span><h4>Prova del fumo</h4><p>Fumo nell'aspirazione e nel circuito del turbo: una perdita d'aria si vede subito e si sistema prima della mappa.</p><div class="chips"><span>Smoke</span></div></article>
+        <article class="mstep"><span class="n">03</span><h4>Copia dell'originale</h4><p>Leggiamo la centralina dalla presa OBD, al banco o in boot. Il file di serie resta salvato.</p><div class="chips"><span>Alientech</span><span>Magic Motorsport</span><span>CMD</span></div></article>
+        <article class="mstep"><span class="n">04</span><h4>Mappa su misura</h4><p>Pressione del turbo, iniezione, anticipo e limitatori, scritti per il tuo motore e per come guidi.</p><div class="chips"><span>Motore</span><span>Cambio</span></div></article>
+        <article class="mstep"><span class="n">05</span><h4>Prova su strada</h4><p>Registriamo i dati in marcia e controlliamo i fumi allo scarico. Si corregge finché tutto è nei valori giusti.</p><div class="chips"><span>Dati in marcia</span><span>Scarico</span></div></article>
+        <article class="mstep"><span class="n">06</span><h4>Consegna</h4><p>Ti diamo i valori prima e dopo. L'originale resta archiviato: si torna indietro quando vuoi.</p><div class="chips"><span>Prima e dopo</span><span>File originale</span></div></article>
+      </div>
+      <div class="method-bar" aria-hidden="true"><i id="method-bar"></i></div>
+    </section>
+
+    <div class="sheet gutter" data-sheet>
+      <div class="wrap">
+        <div class="d-head reveal"><h3>Non solo cavalli</h3><p>Con gli stessi strumenti lavoriamo sul cambio, sui consumi, sulle chiavi e sulle centraline guaste.</p></div>
+        <div class="sub reveal">
+          <div class="cards">
+            <div class="card"><span class="k">Centralina cambio</span><h5>Cambio automatico</h5><p>Cambiate più rapide e limiti di coppia adeguati alla nuova mappa del motore.</p></div>
+            <div class="card"><span class="k">Consumi</span><h5>Mappa Eco</h5><p>Più coppia ai bassi giri, meno scalate e meno carburante. Per chi fa tanti chilometri.</p></div>
+            <div class="card"><span class="k">Lavoro</span><h5>Furgoni e camper</h5><p>Più forza a pieno carico e in salita, senza tirare le marce.</p></div>
+            <div class="card"><span class="k">Funzioni</span><h5>Codifiche</h5><p>Attiviamo funzioni che l'auto ha già ma sono spente, e adattiamo i moduli sostituiti.</p></div>
+            <div class="card"><span class="k">Ricambio</span><h5>Centralina guasta</h5><p><span class="tbc">Copiamo i dati sulla centralina di ricambio: l'auto riparte con i suoi codici.</span></p></div>
+            <div class="card"><span class="k">Immobilizer</span><h5>Chiavi</h5><p>Chiave persa o di scorta: la programmiamo noi. Serve la carta di circolazione a tuo nome.</p></div>
+          </div>
+        </div>
+        <div class="sub reveal">
+          <h4>Raccontaci la tua auto</h4>
+          <div class="due">
+            <form class="due-form" id="prep-form" autocomplete="off">
+              <div class="fields">
+                <label>Auto e motore<input type="text" id="p-auto" placeholder="Es. Golf 2.0 TDI 150 CV"></label>
+                <label>Anno e chilometri<input type="text" id="p-km" placeholder="Es. 2019, 120.000 km"></label>
+              </div>
+              <div class="lab"><span>Cambio</span><div class="seg" role="radiogroup" aria-label="Cambio"><label><input type="radio" name="p-cambio" value="manuale" checked>Manuale</label><label><input type="radio" name="p-cambio" value="automatico">Automatico</label></div></div>
+              <div class="lab"><span>Cosa vuoi ottenere</span><div class="seg" role="radiogroup" aria-label="Cosa vuoi ottenere"><label><input type="radio" name="p-goal" value="più spinta" checked>Più spinta</label><label><input type="radio" name="p-goal" value="meno consumi">Meno consumi</label><label><input type="radio" name="p-goal" value="cambio più rapido">Cambio più rapido</label><label><input type="radio" name="p-goal" value="non so, consigliatemi voi">Consigliatemi voi</label></div></div>
+            </form>
+            <div class="due-out">
+              <span class="k">Ti rispondiamo con</span>
+              <ul class="ans"><li>Se la tua centralina si legge</li><li>La preparazione giusta per il tuo motore</li><li>Prezzo e tempi, prima di iniziare</li></ul>
+              <div class="ctas"><a class="btn primary sm" id="p-send" href="https://wa.me/393505655754" target="_blank" rel="noopener">Manda su WhatsApp</a></div>
+            </div>
+          </div>
+        </div>
+        <details class="more reveal">
+          <summary>Tutti i dettagli e le domande</summary>
+          <div class="more-body">
+            <div><h4>Cosa controlliamo prima della mappa</h4>
+              <ul class="checks">
+                <li><b>Errori in centralina</b>Motore, cambio e moduli collegati.</li>
+                <li><b>Turbo</b>Pressione, attuatore e tubi.</li>
+                <li><b>Perdite d'aria</b>Con la prova del fumo.</li>
+                <li><b>Frizione</b>Se slitta oggi, con più coppia slitta di più.</li>
+                <li><b>Iniezione e accensione</b>Iniettori, candele e bobine.</li>
+                <li><b>FAP ed EGR</b>Puliti e funzionanti.</li>
+                <li><b>Olio e tagliando</b>Livelli, filtri e scadenze.</li>
+                <li><b>Freni e gomme</b>Più spinta vuol dire più freno.</li>
+                <li><b>Batteria</b>Con la tensione bassa la scrittura della centralina può fallire.</li>
+              </ul>
+            </div>
+            <div><h4>Domande frequenti</h4>
+              <div class="faq">
+                <details><summary>Quanti cavalli in più?</summary><p>Dipende dal motore. Sui turbo, con lo Stage 1, di solito <span class="tbc">tra il 15 e il 30%</span>. Sugli aspirati il guadagno è piccolo: te lo diciamo prima, così non spendi per niente.</p></details>
+                <details><summary>Il motore si rovina?</summary><p>Una mappa fatta bene resta nei limiti dei pezzi. Per questo prima facciamo diagnosi e prova del fumo, e dopo controlliamo i dati in marcia. Su un motore con problemi non la facciamo.</p></details>
+                <details><summary>Si può tornare all'originale?</summary><p>Sì. Il file di serie resta salvato: lo rimettiamo quando vuoi, per esempio prima di vendere l'auto.</p></details>
+                <details><summary>Quanto tempo ci vuole?</summary><p>Uno Stage 1 di solito <span class="tbc">in giornata</span>. Per Stage 2 e 3 dipende dai pezzi: la data te la diamo con il preventivo.</p></details>
+                <details><summary>Che componenti montate per Stage 2 e 3?</summary><p>Di marche da preparatori, per esempio <span class="tbc">filtri BMC, intercooler Wagner Tuning, frizioni Sachs Performance</span>. Te li scriviamo nel preventivo, con il prezzo.</p></details>
+                <details><summary>Cosa dice la legge?</summary><p>Per circolare su strada, una potenza diversa da quella scritta sulla carta di circolazione va collaudata in Motorizzazione (articolo 78 del Codice della strada). Prima del lavoro ti spieghiamo cosa comporta, anche per assicurazione e garanzia della casa. Per le auto da pista facciamo preparazioni per uso non stradale.</p></details>
+                <details><summary>Che garanzia date?</summary><p><span class="tbc">Da definire con l'officina.</span></p></details>
+                <details><summary>Lavorate anche su furgoni e moto?</summary><p>Sui furgoni e sui camper sì, diesel e benzina. Per le <span class="tbc">moto</span> chiedici. Mandaci modello e motore: ti diciamo subito se la centralina si legge.</p></details>
+              </div>
+            </div>
+          </div>
+        </details>
+        <div class="cta-row reveal"><a class="btn primary" href="https://wa.me/393505655754?text=Buongiorno%2C%20vorrei%20un%20preventivo%20per%20una%20preparazione.%20Auto%20e%20motore%3A%20%20Km%3A%20%20Cosa%20vorrei%20ottenere%3A%20" target="_blank" rel="noopener">Chiedi un preventivo</a><a class="btn ghost" href="tel:+393505655754">Chiama 350 565 5754</a></div>
       </div>
     </div>
   </section>
@@ -948,6 +1142,8 @@ button { font-family: var(--font); }
   try { motionOn = sessionStorage.getItem("dan-motion") === "1"; } catch (e) {}
   var reduce = phoneReduce && !motionOn;
   if (motionOn) document.documentElement.classList.add("motion-on");
+  // senza animazioni il metodo delle preparazioni si scorre a mano, di lato
+  if (reduce || !hasGsap) document.documentElement.classList.add("static");
   var pill = document.getElementById("motion-pill");
   if (reduce && pill) {
     pill.hidden = false;
@@ -1073,6 +1269,138 @@ button { font-family: var(--font); }
   }
   codeBtns.forEach(function (b) { ["mouseenter", "focus", "click"].forEach(function (ev) { b.addEventListener(ev, function () { lightTyre(b.getAttribute("data-i")); }); }); });
 
+  // ---------- preparazioni: potenza e coppia, di serie e per stage ----------
+  // esempi indicativi: indice 0 = di serie, 1-3 = stage; la forma della coppia è [valore a inizio scala, giri del picco, giri dove cala, valore a fine scala]
+  var FUEL = {
+    diesel: { name: "Turbodiesel 2.0 da 150 CV", rpm: [1000, 5000], top: [250, 500], lines: 5, cv: [150, 185, 205, 235], nm: [340, 400, 440, 480],
+      shape: [[0.5, 1750, 2600, 0.55], [0.46, 1850, 2750, 0.52], [0.44, 1950, 2900, 0.53], [0.38, 2150, 3100, 0.55]] },
+    benzina: { name: "Turbobenzina 2.0 da 245 CV", rpm: [1000, 6800], top: [400, 600], lines: 4, cv: [245, 300, 330, 380], nm: [370, 440, 480, 520],
+      shape: [[0.55, 1600, 4300, 0.7], [0.5, 1900, 4200, 0.68], [0.47, 2100, 4400, 0.7], [0.38, 2800, 4800, 0.72]] }
+  };
+  var STAGES = [null,
+    { t: "Solo software", p: "Mappa nuova sulla meccanica di serie: pressione del turbo, iniezione, anticipo e limitatori di coppia.", parts: ["Centralina"], time: "Di solito <span class=\"tbc\">in giornata</span>" },
+    { t: "Software e componenti", p: "Mappa scritta per scarico, aspirazione e intercooler maggiorati. Se serve, frizione rinforzata.", parts: ["Centralina", "Scarico", "Aspirazione", "Intercooler"], time: "Tempi e pezzi nel preventivo" },
+    { t: "Su progetto", p: "Turbina maggiorata, iniettori e frizione adeguata. Si progetta auto per auto.", parts: ["Centralina", "Turbina", "Iniettori", "Frizione"], time: "Tempi e pezzi nel preventivo" }
+  ];
+  var tune = (function () {
+    var svg = document.getElementById("tune-svg");
+    if (!svg) return { drawIn: function () {}, hide: function () {} };
+    var X0 = 56, X1 = 584, Y0 = 296, Y1 = 36, N = 48, X = [];
+    for (var k = 0; k <= N; k++) X.push(X0 + (X1 - X0) * k / N);
+    svg.innerHTML = "<defs><linearGradient id=\"tune-grad\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#6f93ff\" stop-opacity=\"0.3\"/><stop offset=\"1\" stop-color=\"#6f93ff\" stop-opacity=\"0\"/></linearGradient>" +
+      "<clipPath id=\"tune-clip\"><rect id=\"tune-clip-r\" x=\"" + (X0 - 6) + "\" y=\"0\" width=\"" + (X1 - X0 + 12) + "\" height=\"344\"/></clipPath></defs>" +
+      "<g class=\"axes\" id=\"tune-axes\"></g><path class=\"c-bt\"/><path class=\"c-bp\"/>" +
+      "<g clip-path=\"url(#tune-clip)\"><path class=\"c-fill\"/><path class=\"c-tt\"/><path class=\"c-tp\"/></g>" +
+      "<line class=\"cursor\" id=\"tune-cursor\" x1=\"" + X0 + "\" x2=\"" + X0 + "\" y1=\"" + Y1 + "\" y2=\"" + Y0 + "\" opacity=\"0\"/>";
+    var el = { bp: svg.querySelector(".c-bp"), bt: svg.querySelector(".c-bt"), tp: svg.querySelector(".c-tp"), tt: svg.querySelector(".c-tt"), fill: svg.querySelector(".c-fill") };
+    var side = document.getElementById("tune-side"), roCv = document.getElementById("ro-cv"), roNm = document.getElementById("ro-nm");
+    var state = { f: "diesel", s: 1 }, cur = null, morph = null, count = null, shown = { cv: 0, nm: 0 };
+
+    // la coppia segue la forma; la potenza è coppia × giri, riportata al valore di picco
+    function curves(f, i) {
+      var F = FUEL[f], sh = F.shape[i], r0 = F.rpm[0], r1 = F.rpm[1], s = [], w = [], max = 0, p = [], t = [];
+      for (var k = 0; k <= N; k++) {
+        var x = r0 + (r1 - r0) * k / N, v;
+        if (x < sh[1]) { var a = (x - r0) / (sh[1] - r0); v = sh[0] + (1 - sh[0]) * (1 - (1 - a) * (1 - a)); }
+        else if (x < sh[2]) v = 1;
+        else v = 1 - (1 - sh[3]) * Math.pow((x - sh[2]) / (r1 - sh[2]), 1.3);
+        s.push(v); w.push(v * x); if (v * x > max) max = v * x;
+      }
+      for (var j = 0; j <= N; j++) {
+        p.push(Y0 - F.cv[i] * w[j] / max / F.top[0] * (Y0 - Y1));
+        t.push(Y0 - F.nm[i] * s[j] / F.top[1] * (Y0 - Y1));
+      }
+      return { p: p, t: t };
+    }
+    function line(ys) { var out = ""; for (var k = 0; k < ys.length; k++) out += (k ? "L" : "M") + X[k].toFixed(1) + " " + ys[k].toFixed(1); return out; }
+    function paint(c) {
+      el.bp.setAttribute("d", line(c.bp)); el.bt.setAttribute("d", line(c.bt));
+      el.tp.setAttribute("d", line(c.tp)); el.tt.setAttribute("d", line(c.tt));
+      el.fill.setAttribute("d", line(c.tp) + "L" + X1 + " " + Y0 + "L" + X0 + " " + Y0 + "Z");
+    }
+    function axes(f) {
+      var F = FUEL[f], g = "", n = F.lines;
+      for (var i = 0; i <= n; i++) {
+        var y = (Y0 - (Y0 - Y1) * i / n).toFixed(1);
+        g += "<line x1=\"" + X0 + "\" x2=\"" + X1 + "\" y1=\"" + y + "\" y2=\"" + y + "\"" + (i ? "" : " class=\"base\"") + "/>";
+        if (i) g += "<text class=\"ax\" x=\"" + (X0 - 10) + "\" y=\"" + (+y + 4) + "\" text-anchor=\"end\">" + Math.round(F.top[0] * i / n) + "</text><text class=\"ax\" x=\"" + (X1 + 10) + "\" y=\"" + (+y + 4) + "\">" + Math.round(F.top[1] * i / n) + "</text>";
+      }
+      for (var r = 1000; r <= F.rpm[1]; r += 1000) g += "<text class=\"ax\" x=\"" + (X0 + (X1 - X0) * (r - F.rpm[0]) / (F.rpm[1] - F.rpm[0])).toFixed(1) + "\" y=\"" + (Y0 + 22) + "\" text-anchor=\"middle\">" + r / 1000 + "</text>";
+      g += "<text class=\"ax u\" x=\"" + (X0 - 10) + "\" y=\"12\" text-anchor=\"end\">CV</text><text class=\"ax u\" x=\"" + (X1 + 10) + "\" y=\"12\">Nm</text><text class=\"ax u\" x=\"" + X1 + "\" y=\"" + (Y0 + 44) + "\" text-anchor=\"end\">giri × 1000</text>";
+      document.getElementById("tune-axes").innerHTML = g;
+    }
+    function numbers(cv, nm) { shown.cv = cv; shown.nm = nm; roCv.textContent = Math.round(cv); roNm.textContent = Math.round(nm); }
+    function countTo(cv, nm, from) {
+      if (count) count.kill();
+      if (from) numbers(from.cv, from.nm);
+      if (!hasGsap || reduce) { numbers(cv, nm); return; }
+      count = gsap.to(shown, { cv: cv, nm: nm, duration: from ? 1.6 : 0.8, ease: "power2.inOut", onUpdate: function () { numbers(shown.cv, shown.nm); } });
+    }
+    function show(f, s, animate) {
+      var F = FUEL[f], b = curves(f, 0), c = curves(f, s), target = { bp: b.p, bt: b.t, tp: c.p, tt: c.t };
+      if (f !== state.f || !cur) axes(f);
+      state.f = f; state.s = s;
+      if (morph) morph.kill();
+      if (animate && cur && hasGsap && !reduce) {
+        var from = cur, o = { p: 0 }, mix = function (a, z) { return a.map(function (v, k) { return v + (z[k] - v) * o.p; }); };
+        morph = gsap.to(o, { p: 1, duration: 0.9, ease: "power3.inOut", onUpdate: function () { cur = { bp: mix(from.bp, target.bp), bt: mix(from.bt, target.bt), tp: mix(from.tp, target.tp), tt: mix(from.tt, target.tt) }; paint(cur); } });
+      } else { cur = target; paint(cur); }
+      countTo(F.cv[s], F.nm[s], null);
+      var dcv = F.cv[s] - F.cv[0], dnm = F.nm[s] - F.nm[0];
+      document.getElementById("ro-cv-d").textContent = "+" + dcv + " CV · +" + Math.round(dcv / F.cv[0] * 100) + "%";
+      document.getElementById("ro-nm-d").textContent = "+" + dnm + " Nm · +" + Math.round(dnm / F.nm[0] * 100) + "%";
+      document.getElementById("tune-name").textContent = F.name;
+      document.getElementById("tune-lg").textContent = "Stage " + s;
+      svg.setAttribute("aria-label", "Esempio su un " + F.name.toLowerCase() + ": di serie " + F.cv[0] + " CV e " + F.nm[0] + " Nm, con lo Stage " + s + " " + F.cv[s] + " CV e " + F.nm[s] + " Nm");
+      var st = STAGES[s];
+      document.getElementById("stage-txt").innerHTML = "<h5>Stage " + s + " · " + st.t + "</h5><p>" + st.p + "</p><div class=\"chips\">" + st.parts.map(function (x) { return "<span>" + x + "</span>"; }).join("") + "</div><p style=\"font-size:13px;color:var(--steel)\">" + st.time + "</p>";
+    }
+    side.addEventListener("change", function () {
+      show(side.querySelector("input[name=tu-f]:checked").value, +side.querySelector("input[name=tu-s]:checked").value, true);
+    });
+    show("diesel", 1, false);
+    return {
+      // la curva preparata entra come su un banco a rulli: il cursore sale di giri e la disegna
+      hide: function () {
+        gsap.set("#tune-clip-r", { attr: { width: 0 } });
+        numbers(FUEL[state.f].cv[0], FUEL[state.f].nm[0]);
+      },
+      drawIn: function () {
+        var F = FUEL[state.f], d = 1.6;
+        gsap.fromTo("#tune-clip-r", { attr: { width: 0 } }, { attr: { width: X1 - X0 + 12 }, duration: d, ease: "power2.inOut" });
+        gsap.fromTo("#tune-cursor", { attr: { x1: X0, x2: X0 }, opacity: 1 }, { attr: { x1: X1, x2: X1 }, duration: d, ease: "power2.inOut", onComplete: function () { gsap.to("#tune-cursor", { opacity: 0, duration: 0.4 }); } });
+        countTo(F.cv[state.s], F.nm[state.s], { cv: F.cv[0], nm: F.nm[0] });
+      }
+    };
+  })();
+
+  // ---------- preparazioni: attrezzatura, tocca un nome ----------
+  document.querySelectorAll(".tool-row").forEach(function (row) {
+    var desc = row.querySelector(".tool-desc"), plain = desc.innerHTML;
+    row.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-d]");
+      if (!b) return;
+      var was = b.getAttribute("aria-pressed") === "true";
+      row.querySelectorAll("button[data-d]").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+      if (was) { desc.innerHTML = plain; return; }
+      b.setAttribute("aria-pressed", "true");
+      desc.innerHTML = "<b>" + b.textContent + ".</b> " + b.getAttribute("data-d");
+    });
+  });
+
+  // ---------- preparazioni: richiesta su WhatsApp ----------
+  var prepForm = document.getElementById("prep-form"), prepSend = document.getElementById("p-send");
+  if (prepForm) {
+    var prepMsg = function () {
+      var v = function (id) { return document.getElementById(id).value.trim(); };
+      var lines = ["Buongiorno, vorrei un preventivo per una preparazione.", "Auto e motore: " + (v("p-auto") || "-"), "Anno e km: " + (v("p-km") || "-"), "Cambio: " + prepForm.querySelector("input[name=p-cambio]:checked").value, "Cosa vorrei: " + prepForm.querySelector("input[name=p-goal]:checked").value];
+      prepSend.href = "https://wa.me/393505655754?text=" + encodeURIComponent(lines.join("\n"));
+    };
+    prepForm.addEventListener("input", prepMsg); prepForm.addEventListener("change", prepMsg);
+    prepForm.addEventListener("submit", function (e) { e.preventDefault(); prepMsg(); window.open(prepSend.href, "_blank", "noopener"); });
+    prepMsg();
+  }
+
   // ---------- menu laterale ----------
   var drawerWrap = document.getElementById("drawer-wrap"), openMenu = document.getElementById("open-menu");
   function showDrawer() {
@@ -1138,8 +1466,26 @@ button { font-family: var(--font); }
     if (!hasGsap) return;
     var root = views[name];
     ctx = gsap.context(function () {
+      // prima le parti che si fermano mentre scorri, così i punti più in basso tengono conto dello spazio che aggiungono
+      if (name === "preparazioni") {
+        var method = document.getElementById("method"), track = document.getElementById("method-track"), mbar = document.getElementById("method-bar");
+        if (!reduce) {
+          // i sei passaggi scorrono di lato mentre scendi
+          var dist = function () { var last = track.lastElementChild; return Math.max(0, last.offsetLeft + last.offsetWidth + parseFloat(getComputedStyle(track).paddingRight) - track.clientWidth); };
+          gsap.to(track, { x: function () { return -dist(); }, ease: "none", scrollTrigger: {
+            trigger: method, start: "top top", end: function () { return "+=" + dist(); }, pin: true, anticipatePin: 1, scrub: 0.5, invalidateOnRefresh: true,
+            onUpdate: function (self) { mbar.style.transform = "scaleX(" + self.progress.toFixed(3) + ")"; },
+            onToggle: function (self) { if (self.isActive) top.setAttribute("data-tone", "dark"); }
+          } });
+          // i nomi degli strumenti si accendono uno dopo l'altro
+          gsap.fromTo(root.querySelectorAll(".names button"), { opacity: 0.18 }, { opacity: 1, ease: "none", stagger: 0.1, scrollTrigger: { trigger: "#tool-rows", start: "top 80%", end: "bottom 55%", scrub: true } });
+          tune.hide();
+          ScrollTrigger.create({ trigger: "#tune", start: "top 75%", once: true, onEnter: tune.drawIn });
+        }
+      }
+
       // la testata segue quello che c'è sotto
-      root.querySelectorAll(".panel, .stage, [data-sheet]").forEach(function (el) {
+      root.querySelectorAll(".panel, .stage, [data-sheet], [data-band]").forEach(function (el) {
         var t = el.matches("[data-sheet]") ? "solid" : el.getAttribute("data-tone");
         ScrollTrigger.create({ trigger: el, start: "top 56px", end: "bottom 56px", onEnter: tone(t), onEnterBack: tone(t) });
       });
@@ -1216,6 +1562,13 @@ button { font-family: var(--font); }
     }
   }
   window.dAniello = { go: go };
+  // aprire "Tutti i dettagli" allunga la pagina: i punti di scorrimento vanno ricalcolati
+  var refreshQueued = false;
+  document.addEventListener("toggle", function () {
+    if (!hasGsap || refreshQueued) return;
+    refreshQueued = true;
+    requestAnimationFrame(function () { refreshQueued = false; ScrollTrigger.refresh(); });
+  }, true);
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-go]");
     if (t) { e.preventDefault(); go(t.getAttribute("data-go")); }
