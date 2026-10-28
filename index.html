@@ -80,6 +80,9 @@ button { font-family: var(--font); }
 .top { position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding-top: env(safe-area-inset-top, 0px); color: var(--onyx); background: rgba(255, 255, 255, 0); transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; }
 .top:is([data-tone="dark"], [data-tone="ink"]) { color: var(--white); }
 .top[data-tone="ink"] { background: var(--onyx); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08); }
+/* appena la pagina si muove, sopra le foto la testata prende uno sfondo sfocato: le scritte non le passano sotto */
+.top.scrolled[data-tone="light"] { background: rgba(255, 255, 255, 0.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 1px 0 var(--line); }
+.top.scrolled[data-tone="dark"] { background: rgba(23, 26, 32, 0.72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 .top[data-tone="solid"] { background: var(--white); box-shadow: 0 1px 0 var(--line); }
 .top-inner { height: 56px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
 .word { justify-self: start; font-weight: 700; font-size: 15px; letter-spacing: 0.2em; text-decoration: none; white-space: nowrap; background: none; border: 0; color: inherit; cursor: pointer; padding: 0; }
@@ -1465,6 +1468,9 @@ html.static .method-bar { display: none; }
   document.querySelectorAll("[data-view]").forEach(function (v) { views[v.getAttribute("data-view")] = v; });
   var current = "home", ctx = null, homeScroll = 0;
   var top = document.getElementById("top");
+  var markScrolled = function () { top.classList.toggle("scrolled", window.scrollY > 24); };
+  window.addEventListener("scroll", markScrolled, { passive: true });
+  markScrolled();
   function tone(t) { return function () { top.setAttribute("data-tone", t); }; }
 
   function setupView(name) {
