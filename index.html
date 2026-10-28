@@ -78,21 +78,22 @@ button { font-family: var(--font); }
 
 /* ---------- testata ---------- */
 .top { position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding-top: env(safe-area-inset-top, 0px); color: var(--onyx); background: rgba(255, 255, 255, 0); transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; }
-.top[data-tone="dark"] { color: var(--white); }
+.top:is([data-tone="dark"], [data-tone="ink"]) { color: var(--white); }
+.top[data-tone="ink"] { background: var(--onyx); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08); }
 .top[data-tone="solid"] { background: var(--white); box-shadow: 0 1px 0 var(--line); }
 .top-inner { height: 56px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
 .word { justify-self: start; font-weight: 700; font-size: 15px; letter-spacing: 0.2em; text-decoration: none; white-space: nowrap; background: none; border: 0; color: inherit; cursor: pointer; padding: 0; }
 .links { display: flex; gap: 2px; }
 .links button, .top-right a, .menu-btn { font-size: 14px; font-weight: 500; text-decoration: none; padding: 6px 12px; border-radius: 4px; transition: background-color 0.25s ease; white-space: nowrap; background: none; border: 0; color: inherit; cursor: pointer; }
 .links button:hover, .top-right a:hover, .menu-btn:hover, .links button.on { background: rgba(23, 26, 32, 0.08); }
-.top[data-tone="dark"] .links button:hover, .top[data-tone="dark"] .top-right a:hover, .top[data-tone="dark"] .menu-btn:hover, .top[data-tone="dark"] .links button.on { background: rgba(255, 255, 255, 0.16); }
+.top:is([data-tone="dark"], [data-tone="ink"]) .links button:hover, .top:is([data-tone="dark"], [data-tone="ink"]) .top-right a:hover, .top:is([data-tone="dark"], [data-tone="ink"]) .menu-btn:hover, .top:is([data-tone="dark"], [data-tone="ink"]) .links button.on { background: rgba(255, 255, 255, 0.16); }
 .top-right { justify-self: end; display: flex; align-items: center; gap: 2px; }
 .tel-txt { font-variant-numeric: tabular-nums; }
 @media (max-width: 1240px) {
   .links, .top-right .tel-link { display: none; }
   .top-inner { grid-template-columns: 1fr auto; }
   .menu-btn { background: rgba(23, 26, 32, 0.08); }
-  .top[data-tone="dark"] .menu-btn { background: rgba(255, 255, 255, 0.16); }
+  .top:is([data-tone="dark"], [data-tone="ink"]) .menu-btn { background: rgba(255, 255, 255, 0.16); }
 }
 
 /* ---------- pulsanti ---------- */
@@ -453,6 +454,8 @@ html.static .method-bar { display: none; }
 .fields label { display: grid; gap: 6px; font-size: 14px; color: var(--charcoal); }
 .fields input[type="text"], .fields input[type="tel"], .fields input[type="date"], .fields select { width: 100%; min-width: 0; height: 40px; padding: 0 12px; border: 1px solid transparent; border-radius: 4px; background: var(--off); color: var(--onyx); font: 400 14px var(--font); }
 .fields input:focus, .fields select:focus { outline: none; border-color: var(--onyx); }
+/* su telefono e tablet sotto i 16px Safari ingrandisce la pagina quando tocchi il campo */
+@media (pointer: coarse) { .fields input, .fields select, .due-form select { font-size: 16px; } }
 .modal .seg label:has(input:checked) { background: var(--white); color: var(--onyx); }
 .chk { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--charcoal); }
 .chk input { margin-top: 3px; accent-color: var(--blue); }
@@ -1477,7 +1480,7 @@ html.static .method-bar { display: none; }
           gsap.to(track, { x: function () { return -dist(); }, ease: "none", scrollTrigger: {
             trigger: method, start: "top top", end: function () { return "+=" + dist(); }, pin: true, anticipatePin: 1, scrub: 0.5, invalidateOnRefresh: true,
             onUpdate: function (self) { mbar.style.transform = "scaleX(" + self.progress.toFixed(3) + ")"; },
-            onToggle: function (self) { if (self.isActive) top.setAttribute("data-tone", "dark"); }
+            onToggle: function (self) { if (self.isActive) top.setAttribute("data-tone", "ink"); }
           } });
           // i nomi degli strumenti si accendono uno dopo l'altro
           gsap.fromTo(root.querySelectorAll(".names button"), { opacity: 0.18 }, { opacity: 1, ease: "none", stagger: 0.1, scrollTrigger: { trigger: "#tool-rows", start: "top 80%", end: "bottom 55%", scrub: true } });
@@ -1488,7 +1491,7 @@ html.static .method-bar { display: none; }
 
       // la testata segue quello che c'è sotto
       root.querySelectorAll(".panel, .stage, [data-sheet], [data-band]").forEach(function (el) {
-        var t = el.matches("[data-sheet]") ? "solid" : el.getAttribute("data-tone");
+        var t = el.matches("[data-sheet]") ? "solid" : el.matches("[data-band]") ? "ink" : el.getAttribute("data-tone");
         ScrollTrigger.create({ trigger: el, start: "top 56px", end: "bottom 56px", onEnter: tone(t), onEnterBack: tone(t) });
       });
       ScrollTrigger.create({ trigger: document.querySelector(".site-foot"), start: "top 56px", onEnter: tone("solid"), onEnterBack: tone("solid") });
