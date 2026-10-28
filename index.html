@@ -457,6 +457,9 @@ html.static .method-bar { display: none; }
 .fields label { display: grid; gap: 6px; font-size: 14px; color: var(--charcoal); }
 .fields input[type="text"], .fields input[type="tel"], .fields input[type="date"], .fields select { width: 100%; min-width: 0; height: 40px; padding: 0 12px; border: 1px solid transparent; border-radius: 4px; background: var(--off); color: var(--onyx); font: 400 14px var(--font); }
 .fields input:focus, .fields select:focus { outline: none; border-color: var(--onyx); }
+/* su iPhone il campo data ha una larghezza sua e uscirebbe dal riquadro */
+.fields input[type="date"] { -webkit-appearance: none; appearance: none; display: block; max-width: 100%; text-align: left; }
+.fields input[type="date"]::-webkit-date-and-time-value { text-align: left; }
 /* su telefono e tablet sotto i 16px Safari ingrandisce la pagina quando tocchi il campo */
 @media (pointer: coarse) { .fields input, .fields select, .due-form select { font-size: 16px; } }
 .modal .seg label:has(input:checked) { background: var(--white); color: var(--onyx); }
