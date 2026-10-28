@@ -69,7 +69,7 @@ button { font-family: var(--font); }
 .gauge .needle { stroke: var(--white); stroke-width: 3; stroke-linecap: round; }
 .gauge .hub { fill: var(--white); }
 .gauge .unit { fill: rgba(255, 255, 255, 0.5); font: 500 10px var(--font); text-anchor: middle; letter-spacing: 0.12em; }
-.ign-word { display: flex; gap: 0.32em; font-weight: 600; font-size: 18px; letter-spacing: 0.1em; }
+.ign-word { display: flex; gap: 0.32em; font-weight: 700; font-size: 18px; letter-spacing: 0.1em; }
 .lamp { position: absolute; top: 50%; width: min(46vw, 520px); height: min(18vw, 200px); margin-top: calc(min(18vw, 200px) / -2); border-radius: 50%; background: radial-gradient(ellipse at center, rgba(235, 242, 255, 0.95), rgba(150, 185, 255, 0.35) 35%, rgba(0, 0, 0, 0) 68%); opacity: 0; pointer-events: none; }
 .lamp.l { left: -12vw; }
 .lamp.r { right: -12vw; }
@@ -81,7 +81,7 @@ button { font-family: var(--font); }
 .top[data-tone="dark"] { color: var(--white); }
 .top[data-tone="solid"] { background: var(--white); box-shadow: 0 1px 0 var(--line); }
 .top-inner { height: 56px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
-.word { justify-self: start; font-weight: 600; font-size: 15px; letter-spacing: 0.32em; text-decoration: none; white-space: nowrap; background: none; border: 0; color: inherit; cursor: pointer; padding: 0; }
+.word { justify-self: start; font-weight: 700; font-size: 15px; letter-spacing: 0.2em; text-decoration: none; white-space: nowrap; background: none; border: 0; color: inherit; cursor: pointer; padding: 0; }
 .links { display: flex; gap: 2px; }
 .links button, .top-right a, .menu-btn { font-size: 14px; font-weight: 500; text-decoration: none; padding: 6px 12px; border-radius: 4px; transition: background-color 0.25s ease; white-space: nowrap; background: none; border: 0; color: inherit; cursor: pointer; }
 .links button:hover, .top-right a:hover, .menu-btn:hover, .links button.on { background: rgba(23, 26, 32, 0.08); }
@@ -122,6 +122,7 @@ button { font-family: var(--font); }
 .content { position: relative; height: 100%; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; text-align: center; padding-top: calc(56px + env(safe-area-inset-top, 0px) + 7vh); padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
 .head { display: grid; gap: 8px; justify-items: center; max-width: 680px; }
 .head h1, .head h2 { font-size: clamp(32px, 3.4vw, 48px); line-height: 1.17; font-weight: 500; letter-spacing: -0.01em; text-wrap: balance; }
+.head h1 { font-weight: 700; letter-spacing: -0.02em; }
 .head p { font-size: 17px; line-height: 1.45; max-width: 48ch; text-wrap: pretty; }
 .head .eyebrow { opacity: 0.8; }
 .foot { grid-row: 3; display: grid; gap: 14px; justify-items: center; width: 100%; }
@@ -560,6 +561,12 @@ html.static .method-bar { display: none; }
           <button type="button" class="tile" data-go="preparazioni"><picture><source media="(max-width: 900px)" srcset="img/m/preparazioni.jpg"><img src="img/d/preparazioni.jpg" alt="" style="view-transition-name: vt-preparazioni" loading="lazy"></picture><span class="tt"><b>Preparazioni</b><span>Stage 1, 2, 3 e cambio automatico</span></span></button>
           <button type="button" class="tile" data-go="vendita"><picture><source media="(max-width: 900px)" srcset="img/m/vendita.jpg"><img src="img/d/vendita.jpg" alt="" style="view-transition-name: vt-vendita" loading="lazy"></picture><span class="tt"><b>Vendita auto</b><span>Usato controllato nella nostra officina</span></span></button>
         </div>
+        <div class="sub reveal">
+          <div class="cards two">
+            <div class="card"><span class="k">Garage digitale</span><h5>La tua auto, sul telefono</h5><p>Lavori fatti, scadenze e documenti della tua auto in un garage digitale, da guardare quando vuoi.</p></div>
+            <div class="card"><span class="k">Gestionale unico</span><h5>Ogni lavoro resta scritto</h5><p>Revisioni, officina, gomme e preparazioni in un solo gestionale. Quando scade la revisione, il tagliando o il cambio gomme, te lo ricordiamo noi.</p></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -610,7 +617,7 @@ html.static .method-bar { display: none; }
               <li><b>Prenoti</b><span>Dal sito, su WhatsApp o al telefono. L'orario esatto te lo confermiamo noi.</span></li>
               <li><b>Porti il veicolo</b><span>Con la carta di circolazione. Non serve altro.</span></li>
               <li><b>Controlliamo</b><span>Sulla linea, in circa 30 minuti.</span></li>
-              <li><b>Esci con l'esito</b><span>E con la prossima scadenza segnata.</span></li>
+              <li><b>Esci con l'esito</b><span>E con la prossima scadenza segnata: te la ricordiamo noi.</span></li>
             </ol>
           </div>
           <details class="more reveal">
@@ -698,6 +705,7 @@ html.static .method-bar { display: none; }
                 <div class="faq">
                   <details><summary>Il tagliando da voi fa perdere la garanzia della casa?</summary><p>No. Il Regolamento UE 461/2010 permette il tagliando in un'officina indipendente, se si segue il piano della casa con ricambi di qualità equivalente.</p></details>
                   <details><summary>Quanto tempo tenete l'auto?</summary><p>Per un tagliando di solito la riconsegniamo in giornata. Per lavori più lunghi ti diamo una data con il preventivo.</p></details>
+                  <details><summary>Vi ricordate cosa avete fatto alla mia auto?</summary><p>Sì: ogni lavoro resta scritto nel gestionale e lo ritrovi nel tuo garage digitale. Quando scadono revisione e tagliando ti avvisiamo noi.</p></details>
                   <details><summary>Posso mandarvi foto o video prima di venire?</summary><p>Sì: cruscotto, perdite, un rumore registrato col telefono. Ci aiutano a capire se è urgente.</p></details>
                 </div>
               </div>
@@ -759,6 +767,7 @@ html.static .method-bar { display: none; }
                 <div class="faq">
                   <details><summary>Quanto ci vuole per cambiare quattro gomme?</summary><p>Con equilibratura, al massimo un'ora.</p></details>
                   <details><summary>Le invernali possono avere un codice di velocità più basso del libretto?</summary><p>Sì, d'inverno sono permesse gomme M+S con indice più basso, ma non sotto Q, cioè 160 km/h.</p></details>
+                  <details><summary>Mi avvisate per il cambio stagionale?</summary><p>Sì. Misure e data del cambio restano nel gestionale: quando è ora te lo ricordiamo noi.</p></details>
                   <details><summary>Quando va fatta la convergenza?</summary><p>Con gomme nuove, dopo una botta forte o se la gomma si consuma da un lato solo.</p></details>
                 </div>
               </div>
