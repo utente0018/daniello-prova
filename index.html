@@ -135,11 +135,11 @@ button { font-family: var(--font); }
 /* ---------- scena 3D ---------- */
 .stage { position: relative; height: 100vh; height: 100svh; background: linear-gradient(to bottom, #f6f7f9 0%, #eef0f3 52%, #dfe2e7 100%); overflow: clip; color: var(--onyx); }
 .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
-.stage-cap { position: absolute; left: 0; right: 0; top: calc(56px + env(safe-area-inset-top, 0px) + 5vh); display: grid; justify-items: center; text-align: center; pointer-events: none; z-index: 2; }
-.cap { grid-area: 1 / 1; display: grid; gap: 8px; justify-items: center; max-width: 640px; opacity: 0; }
+.stage-cap { position: absolute; left: 0; right: 0; top: calc(56px + env(safe-area-inset-top, 0px) + 5vh); display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; padding-inline: 20px; pointer-events: none; z-index: 2; }
+.cap { grid-area: 1 / 1; display: grid; gap: 8px; justify-items: center; max-width: 640px; min-width: 0; opacity: 0; }
 .cap.on { opacity: 1; }
 .cap h2 { font-size: clamp(30px, 3.2vw, 44px); font-weight: 500; line-height: 1.17; letter-spacing: -0.01em; }
-.cap p { font-size: 17px; color: var(--charcoal); }
+.cap p { font-size: 17px; color: var(--charcoal); text-wrap: balance; }
 .stage-load { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; }
 .stage-load span { font-size: 13px; color: var(--steel); letter-spacing: 0.04em; }
 .stage-load i { display: block; width: 160px; height: 2px; margin: 12px auto 0; background: var(--line); overflow: clip; position: relative; }
@@ -151,6 +151,8 @@ button { font-family: var(--font); }
 .hots { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 .hot { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 8px; padding: 0; background: none; border: 0; cursor: pointer; pointer-events: auto; opacity: 0; transform: translate(-9999px, -9999px); color: var(--onyx); }
 .hot.flip { flex-direction: row-reverse; }
+.hot.bare .lbl { visibility: hidden; }
+.hot .lead { position: absolute; width: 1.5px; background: rgba(23, 26, 32, 0.4); pointer-events: none; display: none; }
 .hot .pulse { position: relative; width: 18px; height: 18px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 4px rgba(35, 80, 216, 0.25); flex: none; }
 .hot .pulse::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(35, 80, 216, 0.5); animation: ring 1.8s ease-out infinite; }
 @keyframes ring { from { transform: scale(0.5); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
@@ -1828,6 +1830,8 @@ async function boot() {
     porta: { p: V(s * halfW * 1.01, 0.72, along(0.52)), n: V(s, 0, 0) },
   };
   const hotEls = [...document.querySelectorAll("#hots .hot")].map((el) => ({ el, h: HOT[el.dataset.hot] }));
+  // il nome resta anche quando l'etichetta non ha posto e si vede solo il punto
+  hotEls.forEach((o) => { const l = o.el.querySelector(".lbl"); o.el.setAttribute("aria-label", l.firstChild.textContent + ", " + l.querySelector("small").textContent); o.lead = o.el.appendChild(document.createElement("i")); o.lead.className = "lead"; });
 
   // camera: angoli attorno all'auto
   const thetaSide = Math.atan2(s, 0);
@@ -1902,17 +1906,39 @@ async function boot() {
     renderer.render(scene, camera);
 
     // punti da toccare
-    hotEls.forEach(({ el, h: spot }) => {
+    // prima si misura tutto, poi si scrive: i punti visibili occupano il loro posto
+    const placed = [];
+    const pts = hotEls.map(({ el, h: spot, lead }) => {
       tmp.copy(spot.p).add(rig.position);
       const facing = spot.n.dot(camPos.clone().sub(tmp).normalize());
       const on = hotT > 0 && facing > 0.12;
       tmp.project(camera);
       const x = (tmp.x * 0.5 + 0.5) * w, y = (-tmp.y * 0.5 + 0.5) * h;
-      // vicino al bordo destro l'etichetta passa a sinistra del punto
-      const flip = x + el.offsetWidth > w - 8;
+      const lbl = el.querySelector(".lbl");
+      const pt = { el, lbl, lead, on, x, y, r: el.firstElementChild.offsetWidth / 2, lw: lbl.offsetWidth, lh: lbl.offsetHeight, ew: el.offsetWidth, eh: el.offsetHeight };
+      if (on) placed.push([x - pt.r - 4, y - pt.r - 4, x + pt.r + 4, y + pt.r + 4]);
+      return pt;
+    });
+    // le etichette non si coprono: a destra, a sinistra, poi sotto o sopra con una linea che le lega al punto; se non c'è posto resta solo il punto
+    const hit = (a) => a[0] < 4 || a[2] > w - 4 || placed.some((b) => a[0] < b[2] && a[2] > b[0] && a[1] < b[3] && a[3] > b[1]);
+    pts.forEach(({ el, lbl, lead, on, x, y, r, lw, lh, ew, eh }) => {
+      let pick = null;
+      const tries = [[false, 0], [true, 0]];
+      for (let k = 1; k <= 4; k++) tries.push([false, k * (lh + 6)], [true, k * (lh + 6)], [false, -k * (lh + 6)], [true, -k * (lh + 6)]);
+      if (on) for (const [flip, ly] of tries) {
+        const x0 = flip ? x - r - 8 - lw : x + r + 8;
+        const box = [x0 - 2, y + ly - lh / 2 - 2, x0 + lw + 2, y + ly + lh / 2 + 2];
+        if (!hit(box)) { pick = { flip, ly }; placed.push(box); break; }
+      }
+      const flip = pick ? pick.flip : false;
       el.classList.toggle("flip", flip);
-      const tx = flip ? x - el.offsetWidth + 9 : x - 9;
-      el.style.transform = "translate(" + tx.toFixed(1) + "px," + (y - 9).toFixed(1) + "px)";
+      el.classList.toggle("bare", on && !pick);
+      const ly = pick ? pick.ly : 0;
+      lbl.style.transform = ly ? "translateY(" + ly.toFixed(0) + "px)" : "";
+      lead.style.display = ly ? "block" : "none";
+      if (ly) { lead.style.left = ((flip ? ew - r : r) - 0.75).toFixed(1) + "px"; lead.style.top = (eh / 2 + (ly < 0 ? ly : r)).toFixed(1) + "px"; lead.style.height = (Math.abs(ly) - r).toFixed(1) + "px"; }
+      const tx = flip ? x - ew + r : x - r;
+      el.style.transform = "translate(" + tx.toFixed(1) + "px," + (y - eh / 2).toFixed(1) + "px)";
       el.style.opacity = on ? hotT : 0;
       el.style.pointerEvents = on && hotT > 0.5 ? "auto" : "none";
       el.tabIndex = on ? 0 : -1;
